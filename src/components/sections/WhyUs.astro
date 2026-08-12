@@ -1,0 +1,126 @@
+---
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+
+interface Props {
+  locale: Locale;
+  /** i18n key prefix, so the B2C /home-solar page can reuse this component
+   * with its own copy ("homeSolar.why") instead of the B2B "why" key group. */
+  sectionKey?: string;
+  /** Anchor id — omit on pages where this section shouldn't be a nav target. */
+  id?: string;
+}
+
+const { locale, sectionKey = "why", id = "why" } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const points = list<{ title: string; body: string }>(`${sectionKey}.points`);
+const crossLang = locale === "mr" ? "en" : "mr";
+---
+
+{/*
+  No comp exists for this section in design-baseline — it is named in the brief but
+  never drawn. Built from the established system: mist plates, hard squares, hairline
+  rules, no shadows, no radius.
+*/}
+<section class="why" id={id}>
+  <div class="wrap">
+    <p class="kicker">{t(`${sectionKey}.kicker`)}</p>
+    <h2 class="headline">{t(`${sectionKey}.headline`)}</h2>
+    <p class="cross" lang={crossLang}>{t(`${sectionKey}.cross`)}</p>
+
+    <ul class="points">
+      {
+        points.map((p) => (
+          <li class="point">
+            <h3 class="point-title">{p.title}</h3>
+            <p class="point-body">{p.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .why {
+    background: var(--color-paper);
+    padding-block: 34px;
+  }
+
+  .kicker {
+    color: var(--color-micro);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h3);
+    font-weight: 800;
+    line-height: 1.35;
+    margin-top: 9px;
+  }
+
+  .cross {
+    color: var(--color-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    margin-top: 6px;
+  }
+
+  .points {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+  }
+
+  .point {
+    border-top: 1px solid var(--color-edge);
+    padding-block: 16px;
+  }
+  .point:last-child {
+    border-bottom: 1px solid var(--color-edge);
+  }
+
+  .point-title {
+    color: var(--color-ink);
+    font-size: var(--text-subhead);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .point-body {
+    color: var(--color-body);
+    font-size: var(--text-body);
+    margin-top: 4px;
+    max-width: 52ch;
+  }
+
+  @media (min-width: 64rem) {
+    .why {
+      padding-block: 64px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+      max-width: 20ch;
+    }
+    .points {
+      column-gap: 40px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 34px;
+    }
+    .point:nth-child(2) {
+      border-top: 1px solid var(--color-edge);
+    }
+    .point:nth-child(3),
+    .point:nth-child(4) {
+      border-bottom: 1px solid var(--color-edge);
+    }
+  }
+</style>

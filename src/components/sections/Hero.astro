@@ -1,0 +1,225 @@
+---
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { BUSINESS, whatsappLink, telLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const stats = list<{ value: string; label: string }>("hero.stats");
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला साठ्याबद्दल विचारायचं आहे."
+    : "Hello, I would like to check stock availability.";
+
+/** The cross-language line is the other locale's script, so it needs its own lang. */
+const crossLang = locale === "mr" ? "en" : "mr";
+---
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="col">
+      <p class="chip">{t("hero.eyebrow")}</p>
+
+      {/*
+        Type-only above the fold. No image competes with the headline, so on 4G
+        the headline, the WhatsApp button and the phone number paint almost
+        immediately — the single biggest conversion lever on a mid-range Android.
+      */}
+      <h1 class="headline">{t("hero.headline")}</h1>
+
+      <p class="subhead">{t("hero.subhead")}</p>
+
+      <p class="cross" lang={crossLang}>{t("hero.cross")}</p>
+
+      {/*
+        The one red button on this screen. The sticky bar carries the same action
+        at 52px; this one is 58px, so the hero stays the primary and the bar reads
+        as the CTA following you down rather than a competing choice.
+      */}
+      <a
+        class="cta"
+        href={whatsappLink(waMessage)}
+        target="_blank"
+        rel="noopener"
+        data-cta="hero-whatsapp"
+      >
+        {t("hero.cta")}
+      </a>
+
+      <a class="call" href={telLink()} data-cta="hero-call">
+        {t("hero.callPrefix")} · {BUSINESS.phoneDisplay}
+      </a>
+
+      <dl class="stats">
+        {
+          stats.map((s) => (
+            <div class="stat">
+              <dt class="stat-value">{s.value}</dt>
+              <dd class="stat-label">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    {/*
+      TODO(MNJ): replace with a real photo of the Latur godown / stock on shelf.
+      The aspect box is fixed so swapping the image in causes zero layout shift.
+      The page is designed to be carried by real photos, not stock photography.
+    */}
+    <div class="photo" role="img" aria-label={t("hero.photoAlt")}>
+      <span class="kicker">photo — Latur godown / stock</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: #fff;
+  }
+
+  .hero-grid {
+    padding-block: 24px 0;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h1);
+    font-weight: 800;
+    line-height: 1.32;
+  }
+  /* Latin headlines get the tighter tracking; Devanagari never does. */
+  .hero :global(:lang(en)) .headline,
+  .headline:lang(en) {
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+  }
+
+  .subhead {
+    color: var(--color-ink);
+    font-size: var(--text-subhead);
+    font-weight: 600;
+  }
+
+  /* The other language, sitting under the headline so nobody has to touch the
+     toggle to understand the offer. */
+  .cross {
+    color: var(--color-body);
+    font-size: var(--text-cross);
+    line-height: 1.6;
+  }
+
+  .cta {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: 18.5px;
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 2px;
+    min-height: 58px;
+    padding-inline: 16px;
+    text-align: center;
+  }
+
+  .call {
+    align-items: center;
+    color: var(--color-forest);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: var(--text-lead);
+    font-weight: 800;
+    gap: 4px 8px;
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: 8px;
+    text-align: center;
+  }
+
+  .stats {
+    border-top: 1px solid var(--color-hair);
+    display: flex;
+    /* Wraps rather than overflows: with longer Marathi the three stats drop to a
+       second row on a 320px screen instead of pushing the page sideways. */
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    margin: 0;
+    padding-top: 10px;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    /* min-width:0 lets a flex item shrink below its content width — without it the
+       longest word sets a floor the column can never go under. */
+    min-width: 0;
+  }
+  .stat-value {
+    color: var(--color-forest);
+    font-size: var(--text-stat);
+    font-weight: 800;
+  }
+  .stat-label {
+    color: var(--color-muted);
+    font-size: var(--text-caption);
+    margin: 0;
+  }
+
+  /* Striped placeholder standing in for the real photograph. Fixed aspect ratio
+     so dropping the real image in shifts nothing. */
+  .photo {
+    align-items: center;
+    aspect-ratio: 390 / 200;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #efede6 0 8px,
+      #f8f7f3 8px 16px
+    );
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-grid {
+      align-items: center;
+      display: grid;
+      gap: 56px;
+      grid-template-columns: 1.05fr 1fr;
+      padding-block: 56px 64px;
+    }
+    .col {
+      gap: 18px;
+    }
+    .headline {
+      font-size: var(--text-h1-lg);
+    }
+    .cta {
+      align-self: flex-start;
+      min-width: 320px;
+    }
+    .call {
+      justify-content: flex-start;
+    }
+    .stats {
+      gap: 32px;
+    }
+    .photo {
+      aspect-ratio: 4 / 5;
+      margin-top: 0;
+    }
+  }
+</style>

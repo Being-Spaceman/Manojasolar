@@ -1,0 +1,89 @@
+---
+import SimplePage from "../components/SimplePage.astro";
+import { useTranslations } from "../i18n/ui";
+import { BUSINESS } from "../data/business";
+
+const t = useTranslations("mr");
+---
+
+{/*
+  TODO(MNJ): this describes the form and lead system as built (Stage 2-4 of the
+  rebuild) but is not legal advice and has not been reviewed by a lawyer. Have the
+  owner get it checked before launch — particularly the retention position and the
+  WhatsApp third-party disclosure — against India's DPDP Act 2023.
+*/}
+<SimplePage
+  locale="mr"
+  title={t("meta.privacy.title")}
+  description={t("meta.privacy.description")}
+  path="/privacy"
+  headline="गोपनीयता धोरण"
+  homeLabel={t("notFound.home")}
+>
+  <p>
+    या वेबसाइटवरील चौकशी फॉर्म भरताना तुम्ही दिलेली माहिती फक्त तुमच्या चौकशीला
+    उत्तर देण्यासाठी वापरली जाते — विकण्यासाठी किंवा जाहिरातीसाठी नाही.
+  </p>
+
+  <h2>आम्ही काय गोळा करतो</h2>
+  <ul>
+    <li>
+      <strong>व्यवसाय चौकशीसाठी:</strong> फर्मचं नाव, संपर्क व्यक्तीचं नाव,
+      मोबाईल नंबर, शहर, आणि ऐच्छिकपणे जीएसटीआयएन, आवडीची उत्पादनं व संदेश
+    </li>
+    <li>
+      <strong>वैयक्तिक चौकशीसाठी:</strong> नाव, मोबाईल नंबर, आणि ऐच्छिकपणे
+      महिन्याचं वीजबिल, वीजवापर व छताचा प्रकार
+    </li>
+    <li>संमतीची वेळ, फॉर्म कोणत्या भाषेत भरला, आणि फॉर्म कोणत्या पानावरून पाठवला</li>
+    <li>
+      गैरवापर रोखण्यासाठी तुमच्या आयपी अ‍ॅड्रेसचा एक सॉल्टेड हॅश (आयपी
+      अ‍ॅड्रेस स्वतः कधीही साठवला जात नाही)
+    </li>
+    <li>तुम्ही व्हॉट्सअ‍ॅपवर पाठवलेले संदेश आणि फोटो</li>
+  </ul>
+
+  <h2>माहिती कुठे जाते</h2>
+  <p>
+    फॉर्ममधली माहिती आमच्या डेटाबेसमध्ये साठवली जाते आणि आमच्या टीमला
+    ईमेलद्वारे कळवली जाते. तुम्ही "व्हॉट्सअ‍ॅपवर पाठवा" बटण वापरल्यास, किंवा
+    चौकशीनंतर आम्ही तुम्हाला व्हॉट्सअ‍ॅपवर संपर्क केल्यास, तो संदेश
+    <strong> WhatsApp (Meta Platforms, Inc.) </strong>
+    या तिसऱ्या पक्षामार्फत जातो — त्यांचं स्वतःचं गोपनीयता धोरण त्या
+    संभाषणाला लागू होतं.
+  </p>
+
+  <h2>किती काळ साठवली जाते</h2>
+  <p>
+    चौकशीची माहिती आमच्या डेटाबेसमध्ये कायमस्वरूपी राहते, जोपर्यंत तुम्ही ती
+    काढून टाकण्यास सांगत नाही. दर महिन्याला मागील महिन्याची माहिती एका
+    सुरक्षित, वेबवरून उघड नसलेल्या फाईलमध्ये बॅकअप म्हणून जतन केली जाते.
+  </p>
+
+  <h2>आम्ही काय करत नाही</h2>
+  <ul>
+    <li>तुमची माहिती विकत नाही किंवा जाहिरातदारांना देत नाही</li>
+    <li>तुम्ही न विचारता तुम्हाला वारंवार संदेश पाठवत नाही</li>
+  </ul>
+
+  <h2>माहिती काढून टाकायची असल्यास</h2>
+  <p>
+    तुमची माहिती आमच्याकडून काढून टाकायची असल्यास {BUSINESS.phoneDisplay} या
+    नंबरवर फोन करा किंवा व्हॉट्सअ‍ॅपवर सांगा. आम्ही ती काढून टाकतो.
+  </p>
+
+  <h2>संपर्क</h2>
+  <p>
+    {BUSINESS.nameDevanagari}, {BUSINESS.address.street},
+    {BUSINESS.address.locality}, {BUSINESS.address.region}
+    {BUSINESS.address.postalCode}. फोन {BUSINESS.phoneDisplay}.
+  </p>
+
+  <p>
+    <em>
+      टीप: हे धोरण साइटवरील फॉर्म आणि लीड सिस्टीम प्रत्यक्षात कशी काम करते हे
+      अचूकपणे सांगतं, पण हा कायदेशीर सल्ला नाही आणि याचं वकिलामार्फत पुनरावलोकन
+      झालेलं नाही. लाँच करण्यापूर्वी हे तपासून घेणं आवश्यक आहे.
+    </em>
+  </p>
+</SimplePage>

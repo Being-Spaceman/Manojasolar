@@ -1,0 +1,99 @@
+---
+import { BUSINESS, hasRealPhone, hasRealEmail } from "../../data/business";
+import { HREFLANG, localePath, type Locale } from "../../i18n/config";
+import { useTranslations, useList } from "../../i18n/ui";
+
+interface Props {
+  locale: Locale;
+  /** Emit the FAQPage graph too — only on the page that actually shows the FAQ. */
+  withFaq?: boolean;
+  /** Which i18n key group's items to build the FAQPage graph from. */
+  faqKey?: string;
+}
+
+const { locale, withFaq = false, faqKey = "faq" } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const site = Astro.site ?? new URL("https://manojaagencies.in");
+const homeUrl = new URL(localePath("/", locale), site).href;
+const id = `${new URL("/", site).href}#business`;
+
+/*
+  Built entirely from src/data/business.ts, which is the same object the footer trust
+  block and contact section read. The schema therefore cannot claim an address or a
+  phone number that differs from what is printed on the page.
+*/
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": id,
+  name: locale === "mr" ? BUSINESS.nameDevanagari : BUSINESS.legalName,
+  legalName: BUSINESS.legalName,
+  alternateName:
+    locale === "mr" ? BUSINESS.legalName : BUSINESS.nameDevanagari,
+  description: t("meta.home.description"),
+  url: homeUrl,
+  inLanguage: HREFLANG[locale],
+  // Placeholders never get published as structured data — a fake number in
+  // JSON-LD reads as fact to Google in a way it never would on the visible
+  // page. Omitted here until real values replace the TODOs in business.ts.
+  ...(hasRealPhone() ? { telephone: BUSINESS.phoneE164 } : {}),
+  ...(hasRealEmail() ? { email: BUSINESS.email } : {}),
+  taxID: BUSINESS.gstin,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: BUSINESS.address.street,
+    addressLocality: BUSINESS.address.locality,
+    addressRegion: BUSINESS.address.region,
+    postalCode: BUSINESS.address.postalCode,
+    addressCountry: BUSINESS.address.country,
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: BUSINESS.geo.lat,
+    longitude: BUSINESS.geo.lng,
+  },
+  openingHours: BUSINESS.hours.schema,
+  areaServed: BUSINESS.areaServed.map((a) => ({ "@type": "Place", name: a })),
+  ...(BUSINESS.sameAs.length ? { sameAs: BUSINESS.sameAs } : {}),
+  knowsLanguage: ["mr-IN", "en-IN"],
+  // Waaree appears as a plain description of the relationship. No logo, no badge,
+  // and deliberately no `brand` claim we do not have rights to make.
+  slogan: t("site.partner"),
+  makesOffer: {
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name:
+        locale === "mr"
+          ? "वारी सोलर उत्पादनांचा घाऊक पुरवठा — पॅनेल, इन्व्हर्टर, स्ट्रक्चर, केबल्स"
+          : "Wholesale supply of Waaree solar products — panels, inverters, structures, cables",
+      areaServed: BUSINESS.address.locality,
+    },
+  },
+};
+
+const faqItems = withFaq
+  ? list<{ q: string; a: string }>(`${faqKey}.items`)
+  : [];
+
+const faqPage = withFaq
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      inLanguage: HREFLANG[locale],
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    }
+  : null;
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(localBusiness)}
+/>
+{faqPage && <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />}

@@ -1,0 +1,285 @@
+---
+import { useTranslations } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { BUSINESS, whatsappLink, telLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const addr = BUSINESS.address;
+/**
+ * Coordinates, not the address string: a text query makes Google geocode the
+ * street name and it lands on the road rather than the shop. The lat/lng drops
+ * the pin exactly on the building.
+ *
+ * Plain embed URL — no API key needed, and it is only ever fetched on tap.
+ */
+const { lat, lng } = BUSINESS.geo;
+const mapSrc = `https://www.google.com/maps?q=${lat},${lng}&z=17&output=embed`;
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला सोलरबद्दल माहिती हवी आहे."
+    : "Hello, I would like some information about solar.";
+---
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="kicker">{t("contact.kicker")}</p>
+    <h2 class="headline">{t("contact.headline")}</h2>
+
+    <div class="cols">
+      <dl class="details">
+        <div class="row">
+          <dt>{t("contact.addressLabel")}</dt>
+          <dd>
+            <address>
+              {addr.street}<br />
+              {addr.locality}, {addr.region} {addr.postalCode}
+            </address>
+          </dd>
+        </div>
+        <div class="row">
+          <dt>{t("contact.phoneLabel")}</dt>
+          <dd><a href={telLink()} class="link">{BUSINESS.phoneDisplay}</a></dd>
+        </div>
+        <div class="row">
+          <dt>{t("contact.hoursLabel")}</dt>
+          <dd>{BUSINESS.hours.display[locale]}</dd>
+        </div>
+        <div class="row">
+          <dt>{t("contact.gstLabel")}</dt>
+          <dd class="mono">{BUSINESS.gstin}</dd>
+        </div>
+      </dl>
+
+      <div class="actions">
+        <a
+          class="wa"
+          href={whatsappLink(waMessage)}
+          target="_blank"
+          rel="noopener"
+          data-cta="contact-whatsapp"
+        >
+          {t("contact.whatsappLabel")}
+        </a>
+        <a
+          class="dir"
+          href={BUSINESS.mapsUrl}
+          target="_blank"
+          rel="noopener"
+          data-cta="contact-directions"
+        >
+          {t("contact.directions")}
+        </a>
+      </div>
+    </div>
+
+    {/*
+      The map is behind a tap. A Google Maps iframe pulls roughly a megabyte of
+      script and tiles from six third-party origins; loading it eagerly would cost
+      more than every other asset on this page combined and it is the single most
+      common reason a local-business page fails a mobile audit. The facade is a
+      fixed-ratio box, so revealing the real map shifts nothing.
+    */}
+    <div class="map" id="map-slot" data-src={mapSrc}>
+      <button class="map-btn" type="button" id="map-btn">
+        <span class="map-label">{t("contact.mapLabel")}</span>
+        <span class="map-sub kicker">{addr.locality}, {addr.region}</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: #fff;
+    padding-block: 34px;
+  }
+
+  .kicker {
+    color: var(--color-micro);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h3);
+    font-weight: 800;
+    line-height: 1.35;
+    margin-top: 9px;
+  }
+
+  .details {
+    display: grid;
+    gap: 14px;
+    margin: 20px 0 0;
+  }
+
+  .row {
+    border-top: 1px solid var(--color-hair);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 12px;
+  }
+
+  .details dt {
+    color: var(--color-micro);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .details dd {
+    color: var(--color-ink);
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  address {
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: var(--text-body) !important;
+    font-weight: 400 !important;
+  }
+
+  .link {
+    box-shadow: inset 0 -1px 0 0 var(--color-field);
+  }
+  .link:hover {
+    box-shadow: inset 0 -1px 0 0 var(--color-green);
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .wa {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    min-height: 56px;
+  }
+
+  .dir {
+    align-items: center;
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    min-height: 56px;
+  }
+
+  /* --- map facade --- */
+  .map {
+    aspect-ratio: 16 / 10;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #efede6 0 8px,
+      #f8f7f3 8px 16px
+    );
+    margin-top: 26px;
+    position: relative;
+  }
+
+  .map-btn {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--color-forest);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-family: inherit;
+    gap: 6px;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .map-label {
+    background: var(--color-green);
+    color: #fff;
+    font-size: var(--text-cta-sm);
+    font-weight: 800;
+    min-height: 52px;
+    padding: 15px 24px;
+  }
+
+  .map :global(iframe) {
+    border: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  @media (min-width: 64rem) {
+    .contact {
+      padding-block: 64px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+    }
+    .cols {
+      display: grid;
+      gap: 56px;
+      grid-template-columns: 1.3fr 1fr;
+      align-items: start;
+    }
+    .details {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 40px;
+    }
+    .actions {
+      margin-top: 20px;
+    }
+    .map {
+      aspect-ratio: 21 / 7;
+    }
+  }
+</style>
+
+<script>
+  // Swap the facade for the real iframe on tap, once.
+  const slot = document.getElementById("map-slot");
+  const btn = document.getElementById("map-btn");
+
+  btn?.addEventListener(
+    "click",
+    () => {
+      const src = slot?.dataset.src;
+      if (!slot || !src) return;
+      const frame = document.createElement("iframe");
+      frame.src = src;
+      frame.loading = "lazy";
+      frame.referrerPolicy = "no-referrer-when-downgrade";
+      frame.title = btn.querySelector(".map-sub")?.textContent ?? "Map";
+      frame.allowFullscreen = true;
+      slot.replaceChildren(frame);
+    },
+    { once: true },
+  );
+</script>

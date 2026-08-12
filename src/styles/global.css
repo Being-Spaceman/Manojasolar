@@ -1,0 +1,316 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   FONTS
+   Self-hosted, subsetted (scripts/subset_fonts.py), font-display: swap.
+   Nothing is fetched from fonts.googleapis.com at runtime.
+
+   Three Mukta weights instead of the design's four — see the note in the
+   subsetting script. Tiro Devanagari Marathi has been dropped; the
+   cross-language line is set in Mukta 400 instead. Reversing that means
+   re-adding Tiro here and to FONTS in the script.
+   =========================================================================== */
+
+@font-face {
+  font-family: "Mukta";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/mukta-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Mukta";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/mukta-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Mukta";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/mukta-800.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/plexmono-400.woff2") format("woff2");
+}
+
+/* ===========================================================================
+   TOKENS
+   Extracted from design-baseline/. Identity v1 (direction 1a) is the authority
+   for colour and type; Landing Heroes turn 4-6 for layout values.
+   =========================================================================== */
+
+@theme {
+  /* --- the five flat brand colours (Identity §03) -------------------------
+     "No gradients, no tints, no screens." Every pair below clears 4.5:1.    */
+  --color-green: #007b3c; /* brand field, secondary stroke — 60% of any surface */
+  --color-forest: #04492a; /* headings, dark bands — 9.7:1 on white */
+  --color-ink: #14171a; /* body text, phone numbers — 17:1 on white */
+  --color-red: #e1261c; /* CTA ONLY. See the rule below. */
+
+  /* --- working surfaces and greys --------------------------------------- */
+  --color-mist: #eaf3ed; /* green-tint plate: chips, step tiles, table highlight */
+  --color-spine: #d6e5dc; /* process connector */
+  --color-hair: #edebe4; /* hairline divider */
+  --color-edge: #e2e0d9; /* card border, sticky-bar top border */
+  --color-field: #d8d5cc; /* input border */
+  --color-paper: #f7f6f2; /* alternate page background */
+  --color-body: #4c5054; /* secondary body copy */
+  --color-muted: #55595d; /* captions, footnotes, form labels */
+  --color-micro: #6c7075; /* mono micro-labels */
+
+  /* --- type -------------------------------------------------------------- */
+  --font-sans:
+    "Mukta", ui-sans-serif, "Noto Sans Devanagari", "Nirmala UI", system-ui,
+    sans-serif;
+  /* Mukta sits in the mono stack on purpose. Font fallback is per-glyph, so Latin
+     still renders in Plex Mono while Devanagari — which the Latin-only mono subset
+     does not contain — resolves to Mukta, a face we have already loaded, instead of
+     whatever Devanagari font the phone happens to ship. Several kickers and every
+     footer label are Marathi. */
+  --font-mono: "Plex Mono", "Mukta", ui-monospace, "Cascadia Mono", monospace;
+
+  /* Scale as drawn at 390px. Line-heights are paired because Devanagari needs
+     more leading than Latin at the same size — the शिरोरेखा plus the vowel
+     signs above and below it eat the default 1.5. */
+  --text-micro: 0.6875rem; /* 11px  — mono kickers */
+  --text-micro--line-height: 1.4;
+  --text-caption: 0.78125rem; /* 12.5px — stat captions, lang toggle */
+  --text-caption--line-height: 1.4;
+  --text-chip: 0.8125rem; /* 13px  — eyebrow chip, table headers */
+  --text-chip--line-height: 1.35;
+  --text-small: 0.875rem; /* 14px  — footnotes */
+  --text-small--line-height: 1.5;
+  --text-body: 0.9375rem; /* 15px  — body copy, list items */
+  --text-body--line-height: 1.55;
+  --text-cross: 0.96875rem; /* 15.5px — the cross-language line */
+  --text-cross--line-height: 1.6;
+  --text-base: 1rem; /* 16px */
+  --text-base--line-height: 1.6;
+  --text-lead: 1.03125rem; /* 16.5px — call link */
+  --text-lead--line-height: 1.5;
+  --text-cta-sm: 1.0625rem; /* 17px  — sticky bar label */
+  --text-cta-sm--line-height: 1.2;
+  --text-cta: 1.125rem; /* 18px  — primary CTA label */
+  --text-cta--line-height: 1.2;
+  --text-subhead: 1.1875rem; /* 19px  — hero subhead, step title */
+  --text-subhead--line-height: 1.5;
+  --text-step: 1.25rem; /* 20px  — panel title */
+  --text-step--line-height: 1.35;
+  --text-stat: 1.375rem; /* 22px  — stat number */
+  --text-stat--line-height: 1.2;
+  --text-h3: 1.6875rem; /* 27px */
+  --text-h3--line-height: 1.35;
+  --text-h2: 1.8125rem; /* 29px  — section headline */
+  --text-h2--line-height: 1.35;
+  --text-h1: 2.125rem; /* 34px  — hero headline */
+  --text-h1--line-height: 1.32;
+  --text-h2-lg: 2.125rem; /* 34px  — desktop section headline */
+  --text-h2-lg--line-height: 1.3;
+  --text-h1-lg: 2.5rem; /* 40px  — desktop hero */
+  --text-h1-lg--line-height: 1.25;
+
+  /* --- spacing ------------------------------------------------------------
+     1px-per-unit so utility names match the design values exactly (p-16 = 16px,
+     gap-14 = 14px). Still expressed in rem, so it scales with the user's root
+     font size rather than locking to device pixels. The design is not on a 4pt
+     grid — it uses optical values (7, 9, 11, 13, 18, 22, 26) — and rounding
+     those into a 4pt grid loses the drawn rhythm. */
+  --spacing: 0.0625rem;
+
+  /* --- radius -------------------------------------------------------------
+     Zero. There is not one rounded corner in the product design. Identity §05:
+     rounded corners are permitted ONLY where the platform forces them (app
+     icon, WhatsApp avatar), never in the UI. */
+  --radius-none: 0px;
+
+  /* --- breakpoints --------------------------------------------------------
+     Only 390px and 1120px are actually drawn. lg is where the process section
+     flips from vertical spine to horizontal 4-column; xl is the container cap. */
+  --breakpoint-sm: 30rem; /* 480 */
+  --breakpoint-md: 48rem; /* 768 */
+  --breakpoint-lg: 64rem; /* 1024 — process flips here */
+  --breakpoint-xl: 70rem; /* 1120 — desktop container width */
+
+  /* --- tap targets --------------------------------------------------------
+     Turn 3 states the rule: every tap target 56px tall. */
+  --spacing-tap: 3.5rem; /* 56px */
+  --spacing-tap-sticky: 3.25rem; /* 52px — sticky bar sits just under the hero CTA */
+  --spacing-tap-text: 2.75rem; /* 44px — text-only call link */
+}
+
+/* ===========================================================================
+   BASE
+   =========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.55;
+    margin: 0;
+    /* Marathi copy is not final and will get longer. A single long compound word
+       — महावितरणकडून, इन्स्टॉलेशनसाठी — is what actually blows a narrow column open
+       and gives the whole page a horizontal scrollbar on a 320px phone. Breaking
+       inside the word is ugly; a sideways-scrolling page is broken. */
+    overflow-wrap: break-word;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Devanagari must never be letterspaced — the शिरोरेखा has to stay one
+     unbroken line (Identity §04). Latin caps in the wordmark are tracked
+     separately and explicitly. */
+  :lang(mr) {
+    letter-spacing: 0 !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 800;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg,
+  iframe {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Focus ring is green, not red: red means "press here" and nothing else, so
+     borrowing it for focus would dilute the one signal the CTA depends on. */
+  :focus-visible {
+    outline: 3px solid var(--color-green);
+    outline-offset: 2px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* ===========================================================================
+   COMPONENT PRIMITIVES
+   Kept here rather than in @layer utilities so they can be reused across
+   sections without repeating a dozen classes in every template.
+   =========================================================================== */
+
+@layer components {
+  /* The one red button. Never two in the same view. */
+  .btn-primary {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    gap: 10px;
+    justify-content: center;
+    min-height: var(--spacing-tap);
+    padding: 0 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Secondary actions are green outlines — never a second red button. */
+  .btn-secondary {
+    align-items: center;
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    gap: 8px;
+    justify-content: center;
+    min-height: var(--spacing-tap);
+    padding: 0 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Eyebrow chip: a flat mist plate. Plain text only — never a badge or seal. */
+  .chip {
+    align-self: flex-start;
+    background: var(--color-mist);
+    color: var(--color-forest);
+    display: inline-flex;
+    font-size: var(--text-chip);
+    font-weight: 600;
+    padding: 6px 10px;
+  }
+
+  /* Mono micro-label: the small uppercase kicker used under process steps and
+     above section headings. */
+  .kicker {
+    color: var(--color-micro);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Visible to screen readers only. Used to ADD context to a control rather than
+     replace its visible label — an aria-label that does not contain the visible
+     text fails WCAG 2.5.3, and breaks voice control ("tap कॉल" stops working). */
+  .sr-only {
+    border: 0;
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  /* Page container — 1120px content width, 16px gutters on mobile. */
+  .wrap {
+    margin-inline: auto;
+    max-width: var(--breakpoint-xl);
+    padding-inline: 16px;
+    width: 100%;
+  }
+  @media (min-width: 64rem) {
+    .wrap {
+      padding-inline: 44px;
+    }
+  }
+}

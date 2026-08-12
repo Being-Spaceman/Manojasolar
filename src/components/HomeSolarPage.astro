@@ -1,0 +1,42 @@
+---
+/**
+ * B2C secondary path — Stage 7. Kept deliberately short and clearly
+ * secondary: a lightweight hero (no stats, no photo), the relocated subsidy
+ * explainer, the relocated B2C "why us" points, the same lead form every
+ * page uses (its "For my own home or shop" fieldset was built for exactly
+ * this page), a homeowner FAQ, and the shared contact block.
+ */
+import Base from "../layouts/Base.astro";
+import JsonLd from "./layout/JsonLd.astro";
+import HomeSolarHero from "./sections/HomeSolarHero.astro";
+import SubsidyExplainer from "./sections/SubsidyExplainer.astro";
+import WhyUs from "./sections/WhyUs.astro";
+import LeadForm from "./sections/LeadForm.astro";
+import Faq from "./sections/Faq.astro";
+import Contact from "./sections/Contact.astro";
+import { useTranslations } from "../i18n/ui";
+import { type Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<Base
+  locale={locale}
+  title={t("homeSolar.meta.title")}
+  description={t("homeSolar.meta.description")}
+  path="/home-solar"
+>
+  <JsonLd slot="head" locale={locale} withFaq faqKey="homeSolar.faq" />
+
+  <HomeSolarHero locale={locale} />
+  <SubsidyExplainer locale={locale} />
+  <WhyUs locale={locale} sectionKey="homeSolar.why" id="homesolar-why" />
+  <LeadForm locale={locale} />
+  <Faq locale={locale} sectionKey="homeSolar.faq" id="homesolar-faq" />
+  <Contact locale={locale} />
+</Base>

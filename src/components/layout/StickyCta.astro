@@ -1,0 +1,170 @@
+---
+import { useTranslations } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { BUSINESS, whatsappLink, telLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला साठ्याबद्दल माहिती हवी आहे."
+    : "Hello, I would like to know about stock availability.";
+---
+
+{/*
+  Mobile only. This is deliberately NOT a second call to action — it is the same
+  action as the hero CTA following you down the page: same red, same label, and
+  it is the shorter of the two (52px vs the hero's 56px) so the hero stays primary.
+*/}
+<div class="sticky-bar" id="sticky-cta" data-state="visible">
+  <a
+    class="wa"
+    href={whatsappLink(waMessage)}
+    target="_blank"
+    rel="noopener"
+    data-cta="sticky-whatsapp"
+  >
+    {t("sticky.whatsapp")}
+  </a>
+  {/*
+    The visible "कॉल" stays part of the accessible name and the rest is added
+    after it, rather than replaced by an aria-label. Replacing it would fail
+    WCAG 2.5.3 and would stop voice control from acting on the word the user
+    can actually see.
+  */}
+  <a class="call" href={telLink()} data-cta="sticky-call">
+    {t("sticky.call")}
+    <span class="sr-only">{t("sticky.callAria")} {BUSINESS.phoneDisplay}</span>
+  </a>
+</div>
+
+<style>
+  .sticky-bar {
+    align-items: center;
+    background: #fff;
+    border-top: 1px solid var(--color-edge);
+    bottom: 0;
+    display: flex;
+    gap: 10px;
+    left: 0;
+    padding: 9px 14px calc(9px + env(safe-area-inset-bottom, 0px));
+    position: fixed;
+    right: 0;
+    transition: transform 0.18s ease-out;
+    z-index: 40;
+  }
+
+  /* Slides away rather than disappearing, so it does not flicker on short scrolls. */
+  .sticky-bar[data-state="hidden"] {
+    transform: translateY(110%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-bar {
+      transition: none;
+    }
+  }
+
+  .wa {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    flex: 1;
+    font-size: var(--text-cta-sm);
+    font-weight: 800;
+    height: 52px;
+    justify-content: center;
+    min-width: 0;
+    text-align: center;
+  }
+
+  /* Secondary actions are green outlines — never a second red button in one view. */
+  .call {
+    align-items: center;
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
+    display: flex;
+    flex: none;
+    font-size: 14.5px;
+    font-weight: 800;
+    height: 52px;
+    justify-content: center;
+    width: 52px;
+  }
+
+  /* Desktop has the header nav and in-page CTAs; the bar would just be clutter. */
+  @media (min-width: 64rem) {
+    .sticky-bar {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Three things hide the bar, all of them cases where it would be in the way:
+  //   1. the footer is on screen  — the trust block and its CTAs are already visible
+  //   2. an input has focus       — the Android keyboard must not push the bar over the field
+  //   3. the visual viewport shrank — belt and braces for keyboards that do not fire focus
+  //
+  // Kept as a handful of lines of vanilla JS rather than a library: this runs on a
+  // mid-range Android on 4G, and it is the only script on the page.
+  const bar = document.getElementById("sticky-cta");
+
+  if (bar) {
+    const reasons = new Set<string>();
+
+    // Only ever touches the bar's own transform. The page's bottom clearance is a
+    // static CSS value on the footer, so hiding the bar never changes document
+    // height — which is what would otherwise feed straight back into the footer
+    // observer below and make the bar flicker.
+    const apply = () => {
+      bar.dataset.state = reasons.size ? "hidden" : "visible";
+    };
+
+    const set = (reason: string, on: boolean) => {
+      if (on) reasons.add(reason);
+      else reasons.delete(reason);
+      apply();
+    };
+
+    // 1. footer visibility
+    const footer = document.querySelector("footer");
+    if (footer && "IntersectionObserver" in window) {
+      new IntersectionObserver(
+        ([entry]) => set("footer", entry.isIntersecting),
+        { rootMargin: "0px 0px -40px 0px" },
+      ).observe(footer);
+    }
+
+    // 2. focus inside a form control
+    const isField = (el: EventTarget | null) =>
+      el instanceof HTMLElement &&
+      ["INPUT", "SELECT", "TEXTAREA"].includes(el.tagName) &&
+      (el as HTMLInputElement).type !== "hidden";
+
+    document.addEventListener("focusin", (e) => {
+      if (isField(e.target)) set("field", true);
+    });
+    document.addEventListener("focusout", () => {
+      // Delay so moving between two fields does not flash the bar back in.
+      setTimeout(() => set("field", isField(document.activeElement)), 120);
+    });
+
+    // 3. on-screen keyboard shrinking the visual viewport
+    const vv = window.visualViewport;
+    if (vv) {
+      const baseline = vv.height;
+      vv.addEventListener("resize", () => {
+        set("keyboard", vv.height < baseline * 0.75);
+      });
+    }
+
+    apply();
+  }
+</script>

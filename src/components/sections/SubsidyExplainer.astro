@@ -1,0 +1,317 @@
+---
+/**
+ * The PM Surya Ghar explainer from the original (B2C) home page — moved here
+ * rather than rewritten, per the Stage 7 brief: this content was well built
+ * and was simply on the wrong page once the site went B2B-primary. A
+ * distributor is scheme-ineligible; a homeowner on /home-solar is exactly
+ * who this was written for.
+ */
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { whatsappLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const marks = list<{ title: string; sub: string }>("homeSolar.subsidy.marks");
+const crossLang = locale === "mr" ? "en" : "mr";
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, माझं अनुदान किती मिळेल? माझं वीजबिल पाठवतो."
+    : "Hello, how much subsidy would I get? I will send my electricity bill.";
+
+const AMOUNT = t("homeSolar.subsidy.amountPlaceholder");
+---
+
+<section class="subsidy" id="subsidy">
+  <div class="wrap">
+    <div class="card">
+      <div class="panel">
+        <p class="kicker-chip">{t("homeSolar.subsidy.kicker")}</p>
+        <h2 class="headline">{t("homeSolar.subsidy.headline")}</h2>
+        <p class="cross" lang={crossLang}>{t("homeSolar.subsidy.cross")}</p>
+
+        <div class="share">
+          <div class="bar" role="img" aria-label={`${t("homeSolar.subsidy.barGovt")} / ${t("homeSolar.subsidy.barYou")}`}>
+            <div class="seg seg-govt"><span>{t("homeSolar.subsidy.barGovt")}</span></div>
+            <div class="seg seg-you"><span>{t("homeSolar.subsidy.barYou")}</span></div>
+          </div>
+
+          <div class="amounts">
+            <div class="amount amount-govt">
+              <p class="figure">{AMOUNT}</p>
+              <p class="figure-label">{t("homeSolar.subsidy.govtCaption")}</p>
+            </div>
+            <div class="amount amount-you">
+              <p class="figure">{AMOUNT}</p>
+              <p class="figure-label">{t("homeSolar.subsidy.youCaption")}</p>
+            </div>
+          </div>
+
+          <p class="note">{t("homeSolar.subsidy.note")}</p>
+        </div>
+      </div>
+
+      <div class="marks">
+        {
+          marks.map((m, i) => (
+            <div class="mark">
+              <span class="icon" aria-hidden="true">
+                {i === 0 && (
+                  <svg viewBox="0 0 46 30" width="46" height="30">
+                    <rect width="46" height="30" fill="var(--color-green)" />
+                    <g fill="#fff">
+                      <rect x="3" y="3" width="12.67" height="10.5" />
+                      <rect x="16.67" y="3" width="12.67" height="10.5" />
+                      <rect x="30.33" y="3" width="12.67" height="10.5" />
+                      <rect x="3" y="16.5" width="12.67" height="10.5" />
+                      <rect x="16.67" y="16.5" width="12.67" height="10.5" />
+                      <rect x="30.33" y="16.5" width="12.67" height="10.5" />
+                    </g>
+                  </svg>
+                )}
+                {i === 1 && (
+                  <svg viewBox="0 0 46 30" width="46" height="30">
+                    <rect
+                      x="1.5"
+                      y="1.5"
+                      width="43"
+                      height="27"
+                      fill="none"
+                      stroke="var(--color-green)"
+                      stroke-width="3"
+                    />
+                    <rect x="13" y="13" width="20" height="4" fill="var(--color-green)" />
+                  </svg>
+                )}
+                {i === 2 && (
+                  <svg viewBox="0 0 46 30" width="46" height="30">
+                    <g fill="var(--color-green)">
+                      <rect x="0" y="6" width="46" height="6" />
+                      <rect x="0" y="15" width="30" height="6" />
+                      <rect x="0" y="24" width="14" height="6" />
+                    </g>
+                  </svg>
+                )}
+              </span>
+              <span class="mark-text">
+                <span class="mark-title">{m.title}</span>
+                <span class="mark-sub">{m.sub}</span>
+              </span>
+            </div>
+          ))
+        }
+
+        <a
+          class="cta"
+          href={whatsappLink(waMessage)}
+          target="_blank"
+          rel="noopener"
+          data-cta="subsidy-whatsapp"
+        >
+          {t("homeSolar.subsidy.cta")}
+        </a>
+        <p class="cta-note">{t("homeSolar.subsidy.ctaNote")}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .subsidy {
+    background: #fff;
+    padding-block: 34px;
+  }
+
+  .card {
+    border: 1px solid var(--color-edge);
+  }
+
+  .panel {
+    background: var(--color-forest);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px 18px 24px;
+  }
+
+  .kicker-chip {
+    align-self: flex-start;
+    background: rgb(255 255 255 / 0.15);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    padding: 6px 10px;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: #fff;
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .cross {
+    color: rgb(255 255 255 / 0.88);
+    font-size: var(--text-cross);
+    line-height: 1.6;
+  }
+
+  .share {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding-top: 6px;
+  }
+
+  .bar {
+    display: flex;
+    height: 52px;
+    overflow: hidden;
+  }
+  .seg {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-cta-sm);
+    font-weight: 800;
+    padding-left: 13px;
+  }
+  .seg-govt {
+    background: #fff;
+    color: var(--color-forest);
+    flex: 6;
+  }
+  .seg-you {
+    background: var(--color-green);
+    color: #fff;
+    flex: 4;
+  }
+
+  .amounts {
+    display: flex;
+    gap: 9px;
+  }
+  .amount {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .amount-govt {
+    flex: 6;
+  }
+  .amount-you {
+    flex: 4;
+  }
+
+  .figure {
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 19px;
+  }
+  .figure-label {
+    color: rgb(255 255 255 / 0.78);
+    font-size: var(--text-caption);
+  }
+
+  .note {
+    color: rgb(255 255 255 / 0.7);
+    font-size: var(--text-chip);
+    line-height: 1.5;
+  }
+
+  .marks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 18px 22px;
+  }
+
+  .mark {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+  }
+  .mark + .mark {
+    border-top: 1px solid var(--color-hair);
+    padding-top: 16px;
+  }
+
+  .icon {
+    flex: none;
+    line-height: 0;
+  }
+
+  .mark-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .mark-title {
+    color: var(--color-ink);
+    font-size: 17.5px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .mark-sub {
+    color: var(--color-muted);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .cta {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 4px;
+    min-height: 56px;
+    padding-inline: 16px;
+    text-align: center;
+  }
+
+  .cta-note {
+    color: var(--color-muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  @media (min-width: 64rem) {
+    .subsidy {
+      padding-block: 64px;
+    }
+    .card {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+    }
+    .panel {
+      gap: 18px;
+      padding: 40px 40px 44px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+    }
+    .marks {
+      justify-content: center;
+      padding: 40px;
+    }
+    .cta {
+      align-self: flex-start;
+      min-width: 320px;
+    }
+    .cta-note {
+      text-align: start;
+    }
+  }
+</style>

@@ -1,0 +1,14 @@
+# These files are `require`d by api/, leads/ and admin/ — never requested
+# directly. Deny-all so /lib/db.php can't be hit as a URL and dump a PHP
+# error (or worse, run cleanly with no guard) straight to a browser.
+
+# Apache 2.4+
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+
+# Apache 2.2 fallback
+<IfModule !mod_authz_core.c>
+  Order deny,allow
+  Deny from all
+</IfModule>

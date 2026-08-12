@@ -1,0 +1,180 @@
+---
+import { useTranslations, useList } from "../../i18n/ui";
+import { localePath, type Locale } from "../../i18n/config";
+
+interface Props {
+  locale: Locale;
+  /** i18n key prefix, so the B2C /home-solar page can reuse this component
+   * with its own copy ("homeSolar.faq") instead of the B2B "faq" key group. */
+  sectionKey?: string;
+  id?: string;
+}
+
+const { locale, sectionKey = "faq", id = "faq" } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const items = list<{ q: string; a: string; href?: string; hrefLabel?: string }>(
+  `${sectionKey}.items`,
+);
+---
+
+{/*
+  Native <details>/<summary>. No accordion library, no JS at all — the browser
+  already does this, it works before hydration, it is keyboard accessible for free,
+  and the answers are in the DOM for the crawler whether or not they are open.
+*/}
+<section class="faq" id={id}>
+  <div class="wrap">
+    <p class="kicker">{t(`${sectionKey}.kicker`)}</p>
+    <h2 class="headline">{t(`${sectionKey}.headline`)}</h2>
+
+    <div class="items">
+      {
+        items.map((item) => (
+          <details class="item">
+            <summary class="q">
+              <span class="q-text">{item.q}</span>
+              <span class="mark" aria-hidden="true" />
+            </summary>
+            <div class="a">
+              <p>{item.a}</p>
+              {item.href && (
+                <a class="a-link" href={localePath(item.href, locale)}>
+                  {item.hrefLabel}
+                </a>
+              )}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    background: #fff;
+    padding-block: 34px;
+  }
+
+  .kicker {
+    color: var(--color-micro);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h3);
+    font-weight: 800;
+    line-height: 1.35;
+    margin-top: 9px;
+  }
+
+  .items {
+    margin-top: 20px;
+  }
+
+  .item {
+    border-top: 1px solid var(--color-edge);
+  }
+  .item:last-child {
+    border-bottom: 1px solid var(--color-edge);
+  }
+
+  .q {
+    align-items: flex-start;
+    cursor: pointer;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    list-style: none;
+    /* 56px minimum tap target, same rule as every other control on the page. */
+    min-height: 56px;
+    padding-block: 16px;
+  }
+  .q::-webkit-details-marker {
+    display: none;
+  }
+
+  .q-text {
+    color: var(--color-ink);
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  /* Flat plus / minus drawn in CSS — no icon font, no SVG request. */
+  .mark {
+    flex: none;
+    height: 16px;
+    margin-top: 3px;
+    position: relative;
+    width: 16px;
+  }
+  .mark::before,
+  .mark::after {
+    background: var(--color-green);
+    content: "";
+    position: absolute;
+  }
+  .mark::before {
+    height: 3px;
+    left: 0;
+    top: 6.5px;
+    width: 16px;
+  }
+  .mark::after {
+    height: 16px;
+    left: 6.5px;
+    top: 0;
+    transition: transform 0.15s ease-out;
+    width: 3px;
+  }
+  .item[open] .mark::after {
+    transform: scaleY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark::after {
+      transition: none;
+    }
+  }
+
+  .a {
+    padding-bottom: 18px;
+    padding-right: 30px;
+  }
+  .a p {
+    color: var(--color-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+
+  .a-link {
+    color: var(--color-green);
+    display: inline-block;
+    font-size: var(--text-body);
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  @media (min-width: 64rem) {
+    .faq {
+      padding-block: 64px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+    }
+    .items {
+      margin-top: 34px;
+    }
+    .q-text {
+      font-size: var(--text-subhead);
+    }
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+/**
+ * New section, B2B restructure. No prices anywhere — every card routes to
+ * WhatsApp. Mounting gets one line and nothing more: structure choice
+ * depends on site observation and the vendor decides it, so this is
+ * deliberately not a spec table.
+ */
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { whatsappLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const items = list<{ title: string; body: string }>("products.items");
+const crossLang = locale === "mr" ? "en" : "mr";
+
+function waMessageFor(title: string): string {
+  return locale === "mr"
+    ? `नमस्कार, मला ${title} बद्दल विचारायचं आहे.`
+    : `Hello, I would like to ask about ${title}.`;
+}
+---
+
+<section class="products" id="products">
+  <div class="wrap">
+    <p class="kicker">{t("products.kicker")}</p>
+    <h2 class="headline">{t("products.headline")}</h2>
+    <p class="cross" lang={crossLang}>{t("products.cross")}</p>
+    <p class="note">{t("products.note")}</p>
+
+    <ul class="grid">
+      {
+        items.map((item) => (
+          <li class="card">
+            {/*
+              TODO(MNJ): real product photo. Fixed aspect-ratio so dropping one in
+              causes zero layout shift — same discipline as the hero photo slot.
+            */}
+            <div class="photo" role="img" aria-label={item.title} />
+            <h3 class="title">{item.title}</h3>
+            <p class="body">{item.body}</p>
+            <a
+              class="cta"
+              href={whatsappLink(waMessageFor(item.title))}
+              target="_blank"
+              rel="noopener"
+              data-cta={`products-whatsapp-${item.title.toLowerCase().replace(/[^a-z]+/g, "-")}`}
+            >
+              {t("products.cta")}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .products {
+    background: var(--color-paper);
+    padding-block: 34px;
+  }
+
+  .kicker {
+    color: var(--color-micro);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h3);
+    font-weight: 800;
+    line-height: 1.35;
+    margin-top: 9px;
+  }
+
+  .cross {
+    color: var(--color-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    margin-top: 6px;
+  }
+
+  .note {
+    color: var(--color-muted);
+    font-size: var(--text-small);
+    margin-top: 10px;
+    max-width: 52ch;
+  }
+
+  .grid {
+    display: grid;
+    gap: 14px;
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-edge);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px;
+  }
+
+  .photo {
+    aspect-ratio: 4 / 3;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #efede6 0 8px,
+      #f8f7f3 8px 16px
+    );
+    margin: -18px -18px 4px;
+  }
+
+  .title {
+    color: var(--color-forest);
+    font-size: var(--text-subhead);
+    font-weight: 800;
+  }
+
+  .body {
+    color: var(--color-body);
+    font-size: var(--text-body);
+    flex: 1;
+  }
+
+  .cta {
+    align-items: center;
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
+    display: flex;
+    font-size: var(--text-cta-sm);
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 6px;
+    min-height: 48px;
+    text-align: center;
+  }
+
+  @media (min-width: 64rem) {
+    .products {
+      padding-block: 64px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+    }
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 34px;
+    }
+  }
+</style>

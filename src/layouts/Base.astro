@@ -1,0 +1,116 @@
+---
+import "../styles/global.css";
+import Seo from "../components/layout/Seo.astro";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import StickyCta from "../components/layout/StickyCta.astro";
+import Analytics from "../components/layout/Analytics.astro";
+import { useTranslations } from "../i18n/ui";
+import { HREFLANG, type Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  /** Thank-you and 404 do not need the sticky bar competing with their own CTA. */
+  sticky?: boolean;
+}
+
+const {
+  locale,
+  title,
+  description,
+  path,
+  noindex = false,
+  sticky = true,
+} = Astro.props;
+
+const t = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={HREFLANG[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#007B3C" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {/*
+      Preload only the two weights that paint above the fold. Every face is
+      font-display: swap, so none of this blocks first paint — the headline
+      renders in the system Devanagari fallback and swaps.
+    */}
+    <link
+      rel="preload"
+      href="/fonts/mukta-800.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/mukta-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <Seo
+      locale={locale}
+      title={title}
+      description={description}
+      path={path}
+      noindex={noindex}
+    />
+    <Analytics />
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a href="#main" class="skip">{t("nav.skipToContent")}</a>
+
+    <Header locale={locale} path={path} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+
+    {sticky && <StickyCta locale={locale} />}
+
+    <style>
+      .skip {
+        background: var(--color-red);
+        color: #fff;
+        font-weight: 800;
+        left: 8px;
+        padding: 12px 18px;
+        position: fixed;
+        top: -100px;
+        transition: top 0.15s ease-out;
+        z-index: 100;
+      }
+      .skip:focus {
+        top: 8px;
+      }
+    </style>
+
+    <style is:global>
+      /* Mobile reserves room for the sticky bar; the bar's own script keeps this
+         value in step when it hides. At lg the bar is gone entirely. */
+      :root {
+        --sticky-bar-clearance: 74px;
+      }
+      @media (min-width: 64rem) {
+        :root {
+          --sticky-bar-clearance: 0px;
+        }
+      }
+    </style>
+  </body>
+</html>

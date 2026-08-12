@@ -1,0 +1,195 @@
+---
+import Base from "../layouts/Base.astro";
+import { useTranslations } from "../i18n/ui";
+import { localePath, type Locale } from "../i18n/config";
+import { whatsappLink } from "../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मी नुकतीच वेबसाइटवर चौकशी पाठवली आहे."
+    : "Hello, I have just submitted an enquiry on the website.";
+---
+
+{/*
+  `sticky={false}`: the page already has a WhatsApp button as its secondary path,
+  and a fixed bar carrying the same action would be the second competing CTA the
+  design is careful to avoid everywhere else.
+*/}
+<Base
+  locale={locale}
+  title={t("meta.thankYou.title")}
+  description={t("meta.thankYou.description")}
+  path="/thank-you"
+  noindex
+  sticky={false}
+>
+  <section class="ty">
+    <div class="wrap inner">
+      <span class="tick" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="48" height="48">
+          <path
+            d="M8 25.5 L19 36 L40 13"
+            fill="none"
+            stroke="#fff"
+            stroke-width="6"
+          />
+        </svg>
+      </span>
+
+      <h1 class="headline">{t("thankYou.headline")}</h1>
+      <p class="body">{t("thankYou.body")}</p>
+
+      <div class="next">
+        <p class="next-head kicker">{t("thankYou.callbackHeading")}</p>
+        <ul class="next-list">
+          <li>
+            <span class="dot" aria-hidden="true"></span>
+            <span>{t("thankYou.callbackTime")}</span>
+          </li>
+          <li>
+            <span class="dot" aria-hidden="true"></span>
+            <span>{t("thankYou.callbackSurvey")}</span>
+          </li>
+        </ul>
+      </div>
+
+      <p class="wa-note">{t("thankYou.whatsappNote")}</p>
+      <a
+        class="wa"
+        href={whatsappLink(waMessage)}
+        target="_blank"
+        rel="noopener"
+        data-cta="thankyou-whatsapp"
+      >
+        {t("thankYou.whatsappCta")}
+      </a>
+
+      <a class="home" href={localePath("/", locale)}>{t("thankYou.home")}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ty {
+    background: #fff;
+    padding-block: 40px 56px;
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 44rem;
+  }
+
+  .tick {
+    align-items: center;
+    background: var(--color-green);
+    display: flex;
+    flex: none;
+    height: 64px;
+    justify-content: center;
+    width: 64px;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: 1.35;
+    margin-top: 6px;
+  }
+
+  .body {
+    color: var(--color-body);
+    font-size: var(--text-base);
+  }
+
+  .next {
+    background: var(--color-mist);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+    padding: 18px 16px;
+  }
+
+  .next-head {
+    color: var(--color-forest);
+  }
+
+  .next-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .next-list li {
+    display: flex;
+    gap: 10px;
+  }
+  .dot {
+    background: var(--color-green);
+    flex: none;
+    height: 8px;
+    margin-top: 7px;
+    width: 8px;
+  }
+  .next-list span:last-child {
+    color: var(--color-ink);
+    font-size: var(--text-body);
+    line-height: 1.55;
+  }
+
+  .wa-note {
+    color: var(--color-muted);
+    font-size: 13.5px;
+    margin-top: 8px;
+  }
+
+  /* Secondary path, so it is the green outline — not a second red button. */
+  .wa {
+    align-items: center;
+    border: 2px solid var(--color-green);
+    color: var(--color-green);
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    min-height: 56px;
+  }
+
+  .home {
+    color: var(--color-muted);
+    font-size: var(--text-body);
+    margin-top: 6px;
+    text-align: center;
+    box-shadow: inset 0 -1px 0 0 var(--color-field);
+    align-self: center;
+  }
+
+  @media (min-width: 64rem) {
+    .ty {
+      padding-block: 72px 96px;
+    }
+    .headline {
+      font-size: var(--text-h1-lg);
+    }
+    .wa {
+      align-self: flex-start;
+      min-width: 320px;
+    }
+    .home {
+      align-self: flex-start;
+    }
+  }
+</style>

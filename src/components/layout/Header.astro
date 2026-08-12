@@ -1,0 +1,174 @@
+---
+import { useTranslations } from "../../i18n/ui";
+import { localePath, type Locale } from "../../i18n/config";
+import LangToggle from "./LangToggle.astro";
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const t = useTranslations(locale);
+
+/*
+  /home-solar is a different page with different sections, so the B2B
+  anchor nav (#stock, #products, ...) does not resolve there. Rather than a
+  second hardcoded nav array, the one meaningful link on that page is back
+  to the trade site — everything else on this bar (wordmark, lang toggle)
+  already works unchanged because it does not depend on in-page anchors.
+*/
+const onHomeSolar = path === "/home-solar" || path.startsWith("/home-solar/");
+
+const nav = onHomeSolar
+  ? [{ key: "homeSolar.backToTrade", href: localePath("/", locale) }]
+  : [
+      { key: "nav.stock", href: "#stock" },
+      { key: "nav.products", href: "#products" },
+      { key: "nav.why", href: "#why" },
+      { key: "nav.process", href: "#process" },
+      { key: "nav.faq", href: "#faq" },
+      { key: "nav.contact", href: "#contact" },
+      { key: "nav.homeSolar", href: localePath("/home-solar", locale) },
+    ];
+---
+
+<header class="hdr">
+  <div class="hdr-inner wrap">
+    {/*
+      Logo slot. The identity's stacked lockup: म tile + Devanagari name leading,
+      Latin name underneath as the legal line. Set in type, not an image file —
+      it is three text nodes and costs nothing, and it stays crisp at any density.
+    */}
+    {/* No aria-label: the tile is aria-hidden, so the accessible name falls out of
+        the two name spans. An aria-label naming only the Devanagari would fail
+        WCAG 2.5.3 against the visible Latin line underneath it. */}
+    <a href={localePath("/", locale)} class="lockup">
+      <span class="tile" aria-hidden="true">म</span>
+      <span class="names">
+        <span class="name-deva" lang="mr">{t("site.name")}</span>
+        <span class="name-latin">{t("site.nameLatin")}</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label={t("nav.menuOpen")}>
+      {nav.map((item) => <a href={item.href}>{t(item.key)}</a>)}
+    </nav>
+
+    <LangToggle locale={locale} path={path} tone="light" />
+  </div>
+</header>
+
+<style>
+  .hdr {
+    background: var(--color-green);
+    color: #fff;
+  }
+
+  .hdr-inner {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    min-height: 56px;
+    padding-block: 10px;
+  }
+
+  .lockup {
+    align-items: center;
+    display: flex;
+    gap: 9px;
+    /* min-width:0 lets the name shrink so it can never shove the language toggle
+       off the bar. Truncation happens on the two text spans themselves — clipping
+       it here as well would cut the tops off the Devanagari matras. */
+    min-width: 0;
+  }
+
+  /* The म tile — hard square, never rounded outside app-icon contexts. */
+  .tile {
+    background: #fff;
+    color: var(--color-green);
+    display: grid;
+    flex: none;
+    font-size: 20px;
+    font-weight: 800;
+    height: 28px;
+    place-items: center;
+    width: 28px;
+  }
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .name-deva {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    /* 1.6, not the 1.25 a Latin wordmark would take. Mukta's Devanagari metrics ask
+       for roughly 1.6em of line box — a matra above the शिरोरेखा and a vowel sign
+       below the baseline — and this span truncates with overflow:hidden, so any
+       leading tighter than the font's own metrics crops the glyphs rather than
+       merely letting them breathe outside the line box. */
+    line-height: 1.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Latin caps are tracked so the line length matches the Devanagari above it.
+     This width relationship IS the lockup (Identity §04). */
+  .name-latin {
+    /* 0.92, not 0.8. White on Waaree Green tops out at 5.39:1, so there is very
+       little headroom to fade: 0.8 measures 4.04:1 and fails AA at this size. */
+    color: rgb(255 255 255 / 0.92);
+    font-size: 7.5px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Anchor nav is desktop-only: on a phone the whole page is one scroll and the
+     sticky CTA bar is the navigation that matters. */
+  .nav {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .hdr-inner {
+      min-height: 64px;
+    }
+    .tile {
+      font-size: 22px;
+      height: 32px;
+      width: 32px;
+    }
+    .name-deva {
+      font-size: 19px;
+    }
+    .name-latin {
+      font-size: 9px;
+    }
+    .nav {
+      display: flex;
+      flex: 1;
+      gap: 24px;
+      justify-content: flex-end;
+      margin-inline-end: 8px;
+    }
+    .nav a {
+      color: rgb(255 255 255 / 0.92);
+      font-size: var(--text-base);
+      font-weight: 600;
+      padding-block: 6px;
+    }
+    .nav a:hover {
+      color: #fff;
+      box-shadow: inset 0 -2px 0 0 #fff;
+    }
+  }
+</style>

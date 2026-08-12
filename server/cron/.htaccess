@@ -1,0 +1,13 @@
+# These scripts are meant to be run by hPanel's cron scheduler via the PHP
+# binary directly (see server/README.md), never over HTTP — a public
+# /cron/digest.php would let anyone trigger an email send or re-run the
+# archive on demand. Deny-all closes that off; cron still works because it
+# invokes the file on disk, not through the web server.
+
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order deny,allow
+  Deny from all
+</IfModule>

@@ -1,0 +1,412 @@
+{
+  "_comment": "English is the shape of record. Every key that exists here must exist in mr.json; a missing Marathi key falls back to English at runtime and warns in dev.",
+
+  "site": {
+    "name": "Manoja Agencies",
+    "nameLatin": "MANOJA AGENCIES",
+    "partner": "Authorised Channel Partner — Waaree Energies"
+  },
+
+  "meta": {
+    "home": {
+      "title": "Waaree Solar Distributor in Latur | Panels, Inverters, Structures — Manoja Agencies",
+      "description": "Manoja Agencies — authorised Waaree Energies channel partner in Latur. Panels, inverters, mounting structures and cables, held in stock and collected the same day. For dealers, resellers and installers."
+    },
+    "thankYou": {
+      "title": "Thank you — we will call you back | Manoja Agencies",
+      "description": "Your enquiry has reached Manoja Agencies, Latur. We will call you back within one working day."
+    },
+    "privacy": {
+      "title": "Privacy policy | Manoja Agencies",
+      "description": "How Manoja Agencies, Latur handles the details you share through this website."
+    },
+    "notFound": {
+      "title": "Page not found | Manoja Agencies",
+      "description": "That page does not exist. Return to the Manoja Agencies home page."
+    }
+  },
+
+  "nav": {
+    "stock": "Stock",
+    "products": "Products",
+    "why": "Why us",
+    "process": "How it works",
+    "faq": "Questions",
+    "contact": "Contact",
+    "homeSolar": "Home solar",
+    "menuOpen": "Open menu",
+    "skipToContent": "Skip to content"
+  },
+
+  "lang": {
+    "marathi": "Marathi",
+    "english": "English"
+  },
+
+  "hero": {
+    "eyebrow": "Authorised Waaree channel partner · Latur",
+    "headline": "Authorised Waaree stock, held in Latur. Collected the same day.",
+    "subhead": "Panels, inverters, mounting structures and cables for dealers, resellers and installers — not price, logistics.",
+    "cross": "वारीचा अधिकृत साठा, लातूरमध्ये उपलब्ध. त्याच दिवशी घेऊन जा.",
+    "cta": "Check stock on WhatsApp",
+    "callPrefix": "or call",
+    "photoAlt": "Waaree solar stock at the Manoja Agencies godown in Latur",
+    "stats": [
+      { "value": "500+", "label": "vendors supplied" },
+      { "value": "Same-day", "label": "dispatch" },
+      { "value": "Full range", "label": "in stock" }
+    ]
+  },
+
+  "stock": {
+    "kicker": "Stock & dispatch",
+    "headline": "The advantage isn't price. It's that the stock is already here.",
+    "cross": "आमच्याकडे साठा आधीच लातूरमध्ये आहे — तुम्हाला थांबावं लागत नाही.",
+    "statVendors": "500+",
+    "statVendorsLabel": "vendors supplied",
+    "statDispatch": "Same day",
+    "statDispatchLabel": "dispatch from our godown",
+    "note": "Every authorised dealer can quote a price. Very few can hand it to you the same afternoon.",
+    "marks": [
+      {
+        "title": "Authorised Waaree stock",
+        "sub": "Panels, inverters, structures and cables — one supplier, full range"
+      },
+      {
+        "title": "Held in Latur",
+        "sub": "Not shipped in from another district when you place the order"
+      },
+      {
+        "title": "Collected the same day",
+        "sub": "Vendors collect straight from our godown, or we dispatch"
+      }
+    ],
+    "cta": "Check stock on WhatsApp",
+    "ctaNote": "Tell us what you need on WhatsApp — we will confirm what's in stock right now."
+  },
+
+  "products": {
+    "kicker": "In stock",
+    "headline": "Panels, inverters, structures, cables.",
+    "cross": "पॅनेल, इन्व्हर्टर, स्ट्रक्चर, केबल्स — सर्व साठ्यात.",
+    "note": "No prices listed here — every order is quoted on WhatsApp against what's in stock that day.",
+    "items": [
+      {
+        "title": "Solar panels",
+        "body": "Waaree panels, full current range."
+      },
+      {
+        "title": "Inverters",
+        "body": "Waaree inverters across capacities, for residential and commercial systems."
+      },
+      {
+        "title": "Mounting structures",
+        "body": "Elevated high-rise and custom, specified per site."
+      },
+      {
+        "title": "Cables & accessories",
+        "body": "DC/AC cable, connectors, earthing and the rest of the balance-of-system list."
+      }
+    ],
+    "cta": "Ask on WhatsApp"
+  },
+
+  "why": {
+    "kicker": "Why Manoja Agencies",
+    "headline": "One supplier, the full range, in stock.",
+    "cross": "पूर्ण साठा, एकाच ठिकाणी, लातूरमध्ये उपलब्ध.",
+    "points": [
+      {
+        "title": "Stock depth",
+        "body": "Not a per-order transfer from another dealer's godown. What we quote, we can hand over."
+      },
+      {
+        "title": "Same-day collection",
+        "body": "Vendors collect straight from the godown, or we dispatch — no multi-day wait for material to arrive."
+      },
+      {
+        "title": "Authorised Waaree status",
+        "body": "Genuine stock, backed by the manufacturer's warranty, not a grey-market reseller."
+      },
+      {
+        "title": "Full range, one supplier",
+        "body": "Panels, inverters, structures and cables from a single billing relationship, not four."
+      }
+    ]
+  },
+
+  "process": {
+    "eyebrow": "How it works",
+    "headline": "Four steps. No surprises on stock.",
+    "cross": "चौकशीपासून ते साहित्य हातात मिळेपर्यंत — चार पायऱ्या.",
+    "cta": "Start an enquiry — WhatsApp",
+    "steps": [
+      {
+        "title": "Enquiry",
+        "body": "Tell us what you need — panels, inverters, structures, cables — and how much.",
+        "kicker": "Enquiry"
+      },
+      {
+        "title": "Quote",
+        "body": "We confirm what's in stock and quote against it, not against a catalogue.",
+        "kicker": "Quote"
+      },
+      {
+        "title": "Collect or dispatch — the same day",
+        "body": "No multi-day wait on material clearing another dealer's godown.",
+        "kicker": "Collect / dispatch",
+        "bullets": [
+          "Vendors collect directly from our Latur godown",
+          "Or we dispatch, same day",
+          "Full range — no partial orders waiting on a missing line item"
+        ]
+      },
+      {
+        "title": "Support",
+        "body": "Warranty claims go through us — we are the authorised channel partner on record.",
+        "kicker": "Support"
+      }
+    ]
+  },
+
+  "faq": {
+    "kicker": "Questions",
+    "headline": "What dealers ask us first.",
+    "items": [
+      {
+        "q": "Is there a minimum order?",
+        "a": "No fixed minimum. Tell us what you need on WhatsApp and we will confirm what's practical to dispatch or hold for collection."
+      },
+      {
+        "q": "How does pricing work?",
+        "a": "We don't publish prices — every quote is against current stock and quantity, over WhatsApp. Send us what you need and we will confirm a figure the same day."
+      },
+      {
+        "q": "Do you offer credit terms?",
+        "a": "Ask on WhatsApp with your firm details — terms depend on the relationship and volume, and we'd rather discuss that directly than promise something generic here."
+      },
+      {
+        "q": "How fast is dispatch?",
+        "a": "Same day, if what you need is in stock — which it usually is. Vendors are welcome to collect directly from our Latur godown instead of waiting on transport."
+      },
+      {
+        "q": "What if something under warranty fails?",
+        "a": "As the authorised Waaree channel partner, we handle the claim directly — you don't chase the manufacturer yourself."
+      },
+      {
+        "q": "Do you provide technical support?",
+        "a": "Yes — on system sizing, structure choice and product selection. Mounting structure specifics depend on the site, so we talk that through per order rather than publishing a spec sheet."
+      },
+      {
+        "q": "I'm a homeowner, not a dealer — can you help me?",
+        "a": "Yes. Rooftop solar for a single home or shop, including the PM Surya Ghar subsidy, is handled on our home-solar page rather than here.",
+        "href": "/home-solar",
+        "hrefLabel": "See the home-solar page"
+      }
+    ]
+  },
+
+  "form": {
+    "kicker": "Enquiry",
+    "headline": "Tell us what you need.",
+    "cross": "आम्ही एका कामकाजाच्या दिवसात फोन करतो.",
+    "typeLegend": "I'm enquiring as",
+    "typeBusiness": "For my business — dealer, reseller, installer",
+    "typeIndividual": "For my own home or shop",
+    "business": {
+      "legend": "Business enquiry",
+      "firmName": "Firm name",
+      "firmNamePlaceholder": "Firm name",
+      "contactName": "Contact person",
+      "contactNamePlaceholder": "Contact person",
+      "mobile": "Mobile number",
+      "mobilePlaceholder": "10-digit number",
+      "mobilePrefix": "+91",
+      "city": "City",
+      "cityPlaceholder": "City",
+      "productsLabel": "Product interest",
+      "productOptions": [
+        { "value": "panels", "label": "Panels" },
+        { "value": "inverters", "label": "Inverters" },
+        { "value": "mounting", "label": "Mounting structures" },
+        { "value": "cables", "label": "Cables & accessories" }
+      ],
+      "gstin": "GSTIN (optional)",
+      "gstinPlaceholder": "27AAAAA0000A1Z5",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Anything else we should know?"
+    },
+    "individual": {
+      "legend": "Home / shop enquiry",
+      "name": "Your name",
+      "namePlaceholder": "Name",
+      "mobile": "Mobile number",
+      "mobilePlaceholder": "10-digit number",
+      "mobilePrefix": "+91",
+      "bill": "Monthly electricity bill (optional)",
+      "billPlaceholder": "e.g. 3000",
+      "billPrefix": "₹",
+      "usage": "Monthly usage, units/kWh (optional)",
+      "usagePlaceholder": "e.g. 300",
+      "roof": "Roof type (optional)",
+      "roofSelect": "Choose",
+      "roofOptions": [
+        { "value": "rcc", "label": "Concrete (RCC) slab" },
+        { "value": "sheet", "label": "Metal sheet" },
+        { "value": "tile", "label": "Tiled roof" },
+        { "value": "other", "label": "Something else" }
+      ]
+    },
+    "consent": "I agree to Manoja Agencies contacting me about this enquiry.",
+    "submit": "Send enquiry",
+    "submitting": "Sending…",
+    "note": "No cost, no obligation.",
+    "orWhatsApp": "Or send it on WhatsApp instead",
+    "errors": {
+      "typeRequired": "Please choose one of the two options above.",
+      "firmNameRequired": "Please enter the firm name.",
+      "contactNameRequired": "Please enter a name.",
+      "mobileRequired": "Please enter your mobile number.",
+      "mobileInvalid": "Enter a 10-digit mobile number starting with 6, 7, 8 or 9.",
+      "cityRequired": "Please enter your city.",
+      "gstinInvalid": "That does not look like a valid GSTIN.",
+      "consentRequired": "Please agree before sending.",
+      "network": "That did not send. Check your connection and try again, or message us on WhatsApp."
+    }
+  },
+
+  "contact": {
+    "kicker": "Contact",
+    "headline": "Come to the shop, or we come to you.",
+    "addressLabel": "Address",
+    "phoneLabel": "Phone",
+    "whatsappLabel": "WhatsApp",
+    "hoursLabel": "Open",
+    "gstLabel": "GSTIN",
+    "mapLabel": "Show map",
+    "directions": "Get directions"
+  },
+
+  "sticky": {
+    "whatsapp": "WhatsApp us",
+    "call": "CALL",
+    "callAria": "Call Manoja Agencies"
+  },
+
+  "footer": {
+    "trustHeading": "Manoja Agencies",
+    "addressLabel": "Address",
+    "phoneLabel": "Phone",
+    "hoursLabel": "Business hours",
+    "gstLabel": "GST number",
+    "privacy": "Privacy policy",
+    "copyright": "© {year} Manoja Agencies, Latur.",
+    "builtNote": "Authorised Waaree stock — panels, inverters, structures and cables — supplied to dealers, resellers and installers in Latur."
+  },
+
+  "thankYou": {
+    "headline": "Got it. Our team will call you.",
+    "body": "Your enquiry has reached us at the shop in Latur.",
+    "callbackHeading": "What happens next",
+    "callbackTime": "We call you back within one working day, usually the same day if you sent this before 6 pm.",
+    "callbackSurvey": "We'll confirm what's in stock and quote against it — no site visit needed to get started.",
+    "whatsappCta": "Message us on WhatsApp",
+    "whatsappNote": "In a hurry, or want to send a photo or list of what you need? WhatsApp is faster.",
+    "home": "Back to the home page"
+  },
+
+  "notFound": {
+    "headline": "That page is not here.",
+    "body": "The link may be old or mistyped.",
+    "home": "Go to the home page"
+  },
+
+  "homeSolar": {
+    "meta": {
+      "title": "Rooftop Solar for Homes in Latur | PM Surya Ghar Subsidy | Manoja Agencies",
+      "description": "Waaree rooftop solar for your home or shop in Latur, with the PM Surya Ghar subsidy paperwork handled by us. Manoja Agencies is a distributor first, and still installs for homeowners."
+    },
+    "backToTrade": "For dealers & installers",
+    "hero": {
+      "eyebrow": "For your own home or shop · Latur",
+      "headline": "Bill of ₹3,000? Bring it near ₹0.",
+      "subhead": "Waaree rooftop solar for homes and small shops — subsidy paperwork handled by us.",
+      "cross": "घर आणि दुकानासाठी वारी छतावरील सोलर, अनुदानासह.",
+      "cta": "Ask on WhatsApp",
+      "note": "Looking to buy for resale or a project instead? This page is for a single home or shop — dealers and installers start on the main page."
+    },
+    "subsidy": {
+      "kicker": "Government scheme",
+      "headline": "The government covers a large part of the cost.",
+      "cross": "PM Surya Ghar pays a large share of your rooftop system, direct to your bank.",
+      "barGovt": "Government pays",
+      "barYou": "You pay",
+      "amountPlaceholder": "₹ --,---",
+      "govtCaption": "Subsidy · direct to your bank",
+      "youCaption": "Your share",
+      "note": "The figures depend on your roof size — we work out your exact numbers.",
+      "marks": [
+        { "title": "Waaree panels installed", "sub": "Supply and installation by us" },
+        { "title": "We file the application", "sub": "Portal, net meter, MSEDCL approval" },
+        { "title": "Your bill comes down", "sub": "Subsidy credited to your account" }
+      ],
+      "cta": "Ask what my subsidy is",
+      "ctaNote": "Send a photo of your electricity bill on WhatsApp — we will tell you the figure."
+    },
+    "why": {
+      "kicker": "Why Manoja Agencies",
+      "headline": "A local shop, not a call centre.",
+      "cross": "आमचं दुकान लातूरमध्येच आहे — काही अडचण आली तर माणूस येतो.",
+      "points": [
+        {
+          "title": "Our own installation crew",
+          "body": "Not a subcontractor from another district. The same team that surveys your roof installs on it."
+        },
+        {
+          "title": "The paperwork is ours",
+          "body": "Portal application, net meter, MSEDCL approval. You do not visit a single office."
+        },
+        {
+          "title": "Waaree equipment throughout",
+          "body": "Panels with a 25-year performance warranty, backed by the manufacturer, not by us alone."
+        },
+        {
+          "title": "Service stays local",
+          "body": "Two checks a year and a shop in Latur you can walk into. Repairs do not wait on a ticket queue."
+        }
+      ]
+    },
+    "faq": {
+      "kicker": "Questions",
+      "headline": "What homeowners ask us first.",
+      "items": [
+        {
+          "q": "How much does a rooftop system cost?",
+          "a": "It depends on your roof and how much electricity you use, so we do not put a price on this page that would be wrong for you. Send a photo of your bill on WhatsApp and we will give you a real figure for your roof, including the subsidy."
+        },
+        {
+          "q": "Do I have to apply for the subsidy myself?",
+          "a": "No. We file the application on the PM Surya Ghar portal, arrange the net meter and take the MSEDCL approval through. The subsidy is paid directly into your bank account. You do not visit an office."
+        },
+        {
+          "q": "How long does installation take?",
+          "a": "Usually seven days from the day material reaches your site. The survey happens before that, and the net meter and approval follow after."
+        },
+        {
+          "q": "What happens when it rains, or at night?",
+          "a": "Your connection to the grid stays. At night and in heavy monsoon you draw from MSEDCL as usual; on sunny days your meter runs backwards. That is what the net meter is for."
+        },
+        {
+          "q": "What if a panel stops working?",
+          "a": "Waaree panels carry a 25-year performance warranty and the inverter carries its own manufacturer warranty. We are the authorised channel partner, so the claim goes through us and our shop is in Latur."
+        },
+        {
+          "q": "Can a shop or small business get this?",
+          "a": "The PM Surya Ghar subsidy is for domestic connections. Commercial connections can still go solar and it usually pays back faster because your daytime usage is higher — we quote those separately.",
+          "href": "/",
+          "hrefLabel": "Buying for resale or a project instead? See the dealer page"
+        }
+      ]
+    }
+  }
+}

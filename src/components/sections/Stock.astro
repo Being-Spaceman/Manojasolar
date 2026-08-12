@@ -1,0 +1,277 @@
+---
+/**
+ * Replaces Subsidy.astro. PM Surya Ghar is domestic-connection-only and a
+ * distributor is ineligible for it, so the scheme argument that used to live
+ * here cannot be reused — only the *slot* survives: a forest panel carrying
+ * the single strongest commercial argument, in the strongest position on the
+ * page. Refilled with the stock-and-collection story instead of a 6:4 split
+ * bar that no longer has anything to visualise.
+ */
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { whatsappLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const marks = list<{ title: string; sub: string }>("stock.marks");
+const crossLang = locale === "mr" ? "en" : "mr";
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला साठा उपलब्ध आहे का ते विचारायचं आहे."
+    : "Hello, I would like to check what's in stock.";
+---
+
+<section class="stock" id="stock">
+  <div class="wrap">
+    <div class="card">
+      {/* --- the hook: the proof pair, readable before a single word is --- */}
+      <div class="panel">
+        <p class="kicker-chip">{t("stock.kicker")}</p>
+        <h2 class="headline">{t("stock.headline")}</h2>
+        <p class="cross" lang={crossLang}>{t("stock.cross")}</p>
+
+        <div class="proof">
+          <div class="figure-block">
+            <p class="figure">{t("stock.statVendors")}</p>
+            <p class="figure-label">{t("stock.statVendorsLabel")}</p>
+          </div>
+          <div class="figure-block">
+            <p class="figure">{t("stock.statDispatch")}</p>
+            <p class="figure-label">{t("stock.statDispatchLabel")}</p>
+          </div>
+        </div>
+
+        <p class="note">{t("stock.note")}</p>
+      </div>
+
+      {/* --- three flat marks: the whole advantage in three lines --- */}
+      <div class="marks">
+        {
+          marks.map((m, i) => (
+            <div class="mark">
+              <span class="icon" aria-hidden="true">
+                {i === 0 && (
+                  <svg viewBox="0 0 46 30" width="46" height="30">
+                    <rect width="46" height="30" fill="var(--color-green)" />
+                    <g fill="#fff">
+                      <rect x="3" y="3" width="12.67" height="10.5" />
+                      <rect x="16.67" y="3" width="12.67" height="10.5" />
+                      <rect x="30.33" y="3" width="12.67" height="10.5" />
+                      <rect x="3" y="16.5" width="12.67" height="10.5" />
+                      <rect x="16.67" y="16.5" width="12.67" height="10.5" />
+                      <rect x="30.33" y="16.5" width="12.67" height="10.5" />
+                    </g>
+                  </svg>
+                )}
+                {i === 1 && (
+                  <svg viewBox="0 0 46 30" width="46" height="30">
+                    <path
+                      d="M4 22 L4 10 L14 10 L14 4 L32 4 L32 22 Z"
+                      fill="none"
+                      stroke="var(--color-green)"
+                      stroke-width="3"
+                    />
+                    <circle cx="12" cy="24" r="3.5" fill="var(--color-green)" />
+                    <circle cx="28" cy="24" r="3.5" fill="var(--color-green)" />
+                  </svg>
+                )}
+                {i === 2 && (
+                  <svg viewBox="0 0 46 30" width="46" height="30">
+                    <g fill="var(--color-green)">
+                      <rect x="0" y="6" width="46" height="6" />
+                      <rect x="0" y="15" width="30" height="6" />
+                      <rect x="0" y="24" width="14" height="6" />
+                    </g>
+                  </svg>
+                )}
+              </span>
+              <span class="mark-text">
+                <span class="mark-title">{m.title}</span>
+                <span class="mark-sub">{m.sub}</span>
+              </span>
+            </div>
+          ))
+        }
+
+        <a
+          class="cta"
+          href={whatsappLink(waMessage)}
+          target="_blank"
+          rel="noopener"
+          data-cta="stock-whatsapp"
+        >
+          {t("stock.cta")}
+        </a>
+        <p class="cta-note">{t("stock.ctaNote")}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stock {
+    background: #fff;
+    padding-block: 34px;
+  }
+
+  .card {
+    border: 1px solid var(--color-edge);
+  }
+
+  .panel {
+    background: var(--color-forest);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px 18px 24px;
+  }
+
+  .kicker-chip {
+    align-self: flex-start;
+    background: rgb(255 255 255 / 0.15);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    padding: 6px 10px;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: #fff;
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .cross {
+    color: rgb(255 255 255 / 0.88);
+    font-size: var(--text-cross);
+    line-height: 1.6;
+  }
+
+  .proof {
+    display: flex;
+    gap: 18px;
+    padding-top: 6px;
+  }
+  .figure-block {
+    border-top: 3px solid var(--color-green);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 10px;
+  }
+  .figure {
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .figure-label {
+    color: rgb(255 255 255 / 0.78);
+    font-size: var(--text-caption);
+  }
+
+  .note {
+    color: rgb(255 255 255 / 0.7);
+    font-size: var(--text-chip);
+    line-height: 1.5;
+    padding-top: 2px;
+  }
+
+  .marks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 18px 22px;
+  }
+
+  .mark {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+  }
+  .mark + .mark {
+    border-top: 1px solid var(--color-hair);
+    padding-top: 16px;
+  }
+
+  .icon {
+    flex: none;
+    line-height: 0;
+  }
+
+  .mark-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .mark-title {
+    color: var(--color-ink);
+    font-size: 17.5px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .mark-sub {
+    color: var(--color-muted);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .cta {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 4px;
+    min-height: 56px;
+    padding-inline: 16px;
+    text-align: center;
+  }
+
+  .cta-note {
+    color: var(--color-muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  @media (min-width: 64rem) {
+    .stock {
+      padding-block: 64px;
+    }
+    .card {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+    }
+    .panel {
+      gap: 18px;
+      padding: 40px 40px 44px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+    }
+    .marks {
+      justify-content: center;
+      padding: 40px;
+    }
+    .cta {
+      align-self: flex-start;
+      min-width: 320px;
+    }
+    .cta-note {
+      text-align: start;
+    }
+  }
+</style>

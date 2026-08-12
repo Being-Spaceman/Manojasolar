@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Thank-you and 404 also carry <meta name="robots" content="noindex">; this is belt
+# and braces so a thank-you URL never turns up as a search result.
+Disallow: /thank-you
+Disallow: /en/thank-you
+
+Sitemap: https://manojaagencies.in/sitemap-index.xml

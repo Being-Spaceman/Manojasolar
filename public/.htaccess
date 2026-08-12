@@ -1,0 +1,98 @@
+# Manoja Agencies — Apache config for Hostinger shared hosting.
+# Lives in public/ so the build copies it to dist/, and dist/ is what you upload.
+
+# ---------------------------------------------------------------- HTTPS + www
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Force HTTPS.
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Canonical host: strip www so there is one address, not two.
+  # TODO(MNJ): if the domain should keep www, invert this rule instead of deleting it.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ------------------------------------------------------------------- 404 page
+ErrorDocument 404 /404.html
+
+# ------------------------------------------------------------- server/config.php
+# server/config.php deploys into this same public_html/ root (see server/README.md)
+# and holds DB credentials, password hashes and the IP-hash salt. It is only ever
+# `require`d by PHP under server/, never requested directly — deny it outright so
+# a guessed URL can't dump it as plain text.
+<Files "config.php">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</Files>
+
+# --------------------------------------------------------------- compression
+# The single biggest win available on a shared host: the inlined CSS inside each
+# HTML page compresses roughly 6:1.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+  # woff2 is already Brotli-compressed internally — recompressing wastes CPU.
+</IfModule>
+
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/xml
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json
+  AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+</IfModule>
+
+# --------------------------------------------------------------------- caching
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Fonts and images are content-hashed or effectively permanent. A returning
+  # visitor should never re-download 220 KB of Devanagari webfont.
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+
+  # Astro fingerprints these filenames, so they can be cached hard too.
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+
+  # HTML must revalidate: it carries the inlined CSS and all the copy, and a
+  # stale phone number in a visitor's cache is worse than a round trip.
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(woff2|png|jpe?g|webp|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  # Modest hardening. No CSP here: the page loads a Google Maps iframe on tap and
+  # a CSP tight enough to be worth having would need testing against that first.
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always unset X-Powered-By
+</IfModule>
+
+# --------------------------------------------------------------------- MIME
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/webp .webp
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# Directory listings off.
+Options -Indexes

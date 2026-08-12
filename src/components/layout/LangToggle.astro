@@ -1,0 +1,96 @@
+---
+import { LOCALES, LOCALE_FULL_LABEL, localePath, stripLocale, type Locale } from "../../i18n/config";
+
+interface Props {
+  locale: Locale;
+  /** Current path, so the toggle lands on the same page in the other language. */
+  path: string;
+  /** `light` sits on the green header bar; `dark` on a white surface. */
+  tone?: "light" | "dark";
+}
+
+const { locale, path, tone = "light" } = Astro.props;
+const bare = stripLocale(path) || "/";
+---
+
+{/*
+  A 32px-tall outline inside the green bar. It is deliberately the only outlined
+  element up there and carries no fill, so it cannot compete with the solid red CTA.
+  Two real links, not a JS toggle — the other language is a crawlable URL.
+  Labels are the full word ("मराठी" / "English"), not an abbreviation — the header's
+  min-width:0 lockup truncation is what gives this room to grow at narrow widths.
+*/}
+<div class:list={["toggle", tone]} role="group" aria-label={LOCALE_FULL_LABEL[locale]}>
+  {
+    LOCALES.map((l) => {
+      const active = l === locale;
+      return (
+        <a
+          href={localePath(bare, l)}
+          hreflang={l}
+          lang={l}
+          class:list={["seg", { active }]}
+          aria-current={active ? "true" : undefined}
+        >
+          {LOCALE_FULL_LABEL[l]}
+        </a>
+      );
+    })
+  }
+</div>
+
+<style>
+  .toggle {
+    display: flex;
+    flex: none;
+    height: 32px;
+    /* The box is a fixed 32px tall, so anything that does not fit has to be
+       contained rather than allowed to spill out onto the page under the header bar. */
+    overflow: hidden;
+    position: relative;
+  }
+  .toggle.light {
+    border: 1px solid rgb(255 255 255 / 0.45);
+  }
+  .toggle.dark {
+    border: 1px solid var(--color-field);
+  }
+
+  .seg {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-caption);
+    font-weight: 600;
+    justify-content: center;
+    letter-spacing: 0.04em;
+    padding-inline: 8px;
+    /* Full-word labels never wrap to a second line, even in the narrow segment box. */
+    white-space: nowrap;
+  }
+  /* Devanagari is never letterspaced, so the मराठी segment opts out. */
+  .seg[lang="mr"] {
+    letter-spacing: 0;
+  }
+
+  /* 0.95: the inactive segment still has to clear 4.5:1 on green, and 0.85 measures
+     4.34:1. It reads as secondary through the active segment's white plate, not
+     through a faded text colour. */
+  .light .seg {
+    color: rgb(255 255 255 / 0.95);
+  }
+  .light .seg.active {
+    background: rgb(255 255 255 / 0.92);
+    color: var(--color-forest);
+    font-weight: 800;
+  }
+
+  .dark .seg {
+    color: var(--color-muted);
+  }
+  .dark .seg.active {
+    background: var(--color-forest);
+    color: #fff;
+    font-weight: 800;
+  }
+
+</style>

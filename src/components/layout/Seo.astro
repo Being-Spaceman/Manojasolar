@@ -1,0 +1,51 @@
+---
+import { HREFLANG, LOCALES, localePath, stripLocale, type Locale } from "../../i18n/config";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  /** Path without locale prefix, e.g. "/" or "/thank-you". */
+  path: string;
+  /** Keep thank-you and 404 out of the index. */
+  noindex?: boolean;
+  image?: string;
+}
+
+const { locale, title, description, path, noindex = false, image } = Astro.props;
+
+const site = Astro.site ?? new URL("https://manojaagencies.in");
+const bare = stripLocale(path) || "/";
+const canonical = new URL(localePath(bare, locale), site).href;
+const ogImage = new URL(image ?? "/og-default.png", site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+{/* Every locale points at every other, plus x-default at the Marathi root. */}
+{
+  LOCALES.map((l) => (
+    <link
+      rel="alternate"
+      hreflang={HREFLANG[l]}
+      href={new URL(localePath(bare, l), site).href}
+    />
+  ))
+}
+<link rel="alternate" hreflang="x-default" href={new URL(localePath(bare, "mr"), site).href} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Manoja Agencies" />
+<meta property="og:locale" content={HREFLANG[locale].replace("-", "_")} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Manoja Agencies — authorised Waaree channel partner, Latur" />
+<meta name="twitter:card" content="summary_large_image" />

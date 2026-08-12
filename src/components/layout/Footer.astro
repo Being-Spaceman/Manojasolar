@@ -1,0 +1,225 @@
+---
+import { useTranslations } from "../../i18n/ui";
+import { localePath, type Locale } from "../../i18n/config";
+import { BUSINESS, telLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const addr = BUSINESS.address;
+const year = new Date().getFullYear();
+---
+
+<footer class="ftr">
+  <div class="wrap ftr-inner">
+    <div class="lockup">
+      <span class="tile" aria-hidden="true">म</span>
+      <span class="names">
+        <span class="name-deva" lang="mr">{BUSINESS.nameDevanagari}</span>
+        <span class="name-latin">MANOJA AGENCIES</span>
+      </span>
+    </div>
+
+    <p class="blurb">{t("footer.builtNote")}</p>
+
+    {/* Trust block. Every value comes from src/data/business.ts, which is the same
+        object the LocalBusiness JSON-LD reads — the two cannot drift apart. */}
+    <dl class="trust">
+      <div class="row">
+        <dt>{t("footer.addressLabel")}</dt>
+        <dd>
+          <address>
+            {addr.street}<br />
+            {addr.locality}, {addr.region} {addr.postalCode}
+          </address>
+        </dd>
+      </div>
+
+      <div class="row">
+        <dt>{t("footer.phoneLabel")}</dt>
+        <dd><a href={telLink()} class="link">{BUSINESS.phoneDisplay}</a></dd>
+      </div>
+
+      <div class="row">
+        <dt>{t("footer.hoursLabel")}</dt>
+        <dd>{BUSINESS.hours.display[locale]}</dd>
+      </div>
+
+      <div class="row">
+        <dt>{t("footer.gstLabel")}</dt>
+        <dd class="mono">{BUSINESS.gstin}</dd>
+      </div>
+    </dl>
+
+    {/*
+      Waaree appears as plain text and nothing else — no badge, no seal, no logo
+      lockup, no border treatment that could read as an official mark. We do not
+      have usage rights for their marks. Do not "improve" this into a badge.
+    */}
+    <p class="partner">{t("site.partner")}</p>
+
+    <div class="base">
+      <span>{t("footer.copyright", { year })}</span>
+      <a href={localePath("/privacy", locale)} class="link">{t("footer.privacy")}</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    background: var(--color-forest);
+    color: #fff;
+    /* The sticky bar's clearance lives here rather than on <body>, so the green
+       extends under the bar instead of leaving a white strip — and so nothing has
+       to mutate page padding at runtime. A bar that resized the document as it
+       hid would move the footer, which would re-trigger the observer that hid it. */
+    padding-block: 36px calc(32px + var(--sticky-bar-clearance, 0px));
+  }
+
+  .ftr-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .lockup {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+  }
+  .tile {
+    background: #fff;
+    color: var(--color-forest);
+    display: grid;
+    flex: none;
+    font-size: 22px;
+    font-weight: 800;
+    height: 32px;
+    place-items: center;
+    width: 32px;
+  }
+  .names {
+    display: flex;
+    flex-direction: column;
+  }
+  .name-deva {
+    font-size: 19px;
+    font-weight: 800;
+    /* Same reason as the header: 1.25 is a Latin figure and clips Devanagari. */
+    line-height: 1.45;
+  }
+  .name-latin {
+    color: rgb(255 255 255 / 0.72);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+  }
+
+  .blurb {
+    color: rgb(255 255 255 / 0.8);
+    font-size: var(--text-body);
+    max-width: 46ch;
+  }
+
+  .trust {
+    border-top: 1px solid rgb(255 255 255 / 0.18);
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding-top: 22px;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .trust dt {
+    color: rgb(255 255 255 / 0.6);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .trust dd {
+    color: #fff;
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .trust address {
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: var(--text-body) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.02em;
+  }
+
+  .partner {
+    border-top: 1px solid rgb(255 255 255 / 0.18);
+    color: #fff;
+    font-size: var(--text-body);
+    font-weight: 600;
+    padding-top: 22px;
+  }
+
+  .base {
+    border-top: 1px solid rgb(255 255 255 / 0.18);
+    color: rgb(255 255 255 / 0.65);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: var(--text-small);
+    gap: 6px 18px;
+    justify-content: space-between;
+    padding-top: 18px;
+  }
+
+  .link {
+    box-shadow: inset 0 -1px 0 0 rgb(255 255 255 / 0.4);
+  }
+  .link:hover {
+    box-shadow: inset 0 -1px 0 0 #fff;
+  }
+
+  @media (min-width: 64rem) {
+    .ftr {
+      padding-block: 56px 40px;
+    }
+    .ftr-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 1.4fr;
+      gap: 28px 56px;
+    }
+    .lockup,
+    .blurb {
+      grid-column: 1;
+    }
+    .trust {
+      border-top: 0;
+      grid-column: 2;
+      grid-row: 1 / span 3;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 32px;
+      padding-top: 0;
+    }
+    .partner {
+      align-self: end;
+      grid-column: 1;
+    }
+    .base {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

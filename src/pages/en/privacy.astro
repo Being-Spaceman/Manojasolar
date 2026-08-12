@@ -1,0 +1,89 @@
+---
+import SimplePage from "../../components/SimplePage.astro";
+import { useTranslations } from "../../i18n/ui";
+import { BUSINESS } from "../../data/business";
+
+const t = useTranslations("en");
+---
+
+{/*
+  TODO(MNJ): this describes the form and lead system as built (Stages 2-4 of the
+  rebuild) but is not legal advice and has not been reviewed by a lawyer. Have the
+  owner get it checked before launch — particularly the retention position and the
+  WhatsApp third-party disclosure — against India's DPDP Act 2023.
+*/}
+<SimplePage
+  locale="en"
+  title={t("meta.privacy.title")}
+  description={t("meta.privacy.description")}
+  path="/privacy"
+  headline="Privacy policy"
+  homeLabel={t("notFound.home")}
+>
+  <p>
+    The details you enter in the enquiry form on this site are used only to
+    respond to your enquiry — never sold, and never passed to advertisers.
+  </p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li>
+      <strong>For a business enquiry:</strong> firm name, contact person's
+      name, mobile number, city, and optionally a GSTIN, product interest and
+      a message
+    </li>
+    <li>
+      <strong>For an individual enquiry:</strong> your name, mobile number,
+      and optionally your monthly electricity bill, usage and roof type
+    </li>
+    <li>the time you gave consent, which language the form was submitted in, and which page it was submitted from</li>
+    <li>
+      a salted hash of your IP address, used only to slow down abuse — the
+      raw IP address itself is never stored
+    </li>
+    <li>messages and photos you send us on WhatsApp</li>
+  </ul>
+
+  <h2>Where it goes</h2>
+  <p>
+    Form details are stored in our database and emailed to our team. If you
+    use the "Send it on WhatsApp instead" button, or if we contact you on
+    WhatsApp after your enquiry, that message passes through
+    <strong> WhatsApp (Meta Platforms, Inc.) </strong>
+    as a third party — their own privacy policy applies to that conversation.
+  </p>
+
+  <h2>How long we keep it</h2>
+  <p>
+    Enquiry details stay in our database indefinitely, unless you ask us to
+    remove them. Each month, the previous month's records are also copied
+    into a backup file that is not published or accessible on the web.
+  </p>
+
+  <h2>What we do not do</h2>
+  <ul>
+    <li>We do not sell your details or pass them to advertisers</li>
+    <li>We do not send you repeated messages you did not ask for</li>
+  </ul>
+
+  <h2>Removing your details</h2>
+  <p>
+    If you want your details removed, call {BUSINESS.phoneDisplay} or tell us on
+    WhatsApp and we will delete them.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    {BUSINESS.legalName}, {BUSINESS.address.street}, {BUSINESS.address.locality},
+    {BUSINESS.address.region} {BUSINESS.address.postalCode}. Phone
+    {BUSINESS.phoneDisplay}.
+  </p>
+
+  <p>
+    <em>
+      Note: this policy accurately describes how the site's form and lead
+      system actually work, but it is not legal advice and has not been
+      reviewed by a lawyer. It needs that review before launch.
+    </em>
+  </p>
+</SimplePage>

@@ -1,0 +1,344 @@
+---
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { whatsappLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+type Step = {
+  title: string;
+  body: string;
+  kicker: string;
+  bullets?: string[];
+};
+
+const steps = list<Step>("process.steps");
+const crossLang = locale === "mr" ? "en" : "mr";
+
+/** Marathi localises its numerals too — the design sets the tiles as १ २ ३ ४. */
+const NUMERALS =
+  locale === "mr" ? ["१", "२", "३", "४"] : ["1", "2", "3", "4"];
+
+/**
+ * Step 3 (collect / dispatch) is the anxiety step for a B2B buyer — not the
+ * subsidy paperwork that weighted this slot in the B2C version. A
+ * distributor's real worry is whether the stock is actually there when they
+ * show up; that is the step that gets the visual weight.
+ */
+const HEAVY = 2;
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला चौकशी सुरू करायची आहे."
+    : "Hello, I would like to start an enquiry.";
+---
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="head">
+      <div class="head-text">
+        <p class="chip">{t("process.eyebrow")}</p>
+        <h2 class="headline">{t("process.headline")}</h2>
+        <p class="cross" lang={crossLang}>{t("process.cross")}</p>
+      </div>
+      <a
+        class="cta cta-desktop"
+        href={whatsappLink(waMessage)}
+        target="_blank"
+        rel="noopener"
+        data-cta="process-whatsapp-top"
+      >
+        {t("process.cta")}
+      </a>
+    </div>
+
+    {/*
+      One spine runs through all four numbers so a thumb scroll reads as a single
+      continuous job. Step 3 inverts to a forest card and the spine passes straight
+      through it — it gains weight without breaking the four-beat rhythm, which is
+      why it is the same column width as the others on desktop.
+    */}
+    <ol class="steps">
+      {
+        steps.map((step, i) => (
+          <li class:list={["step", { heavy: i === HEAVY }]}>
+            <div class="rail">
+              <span class="tile" aria-hidden="true">{NUMERALS[i]}</span>
+              {i < steps.length - 1 && <span class="spine" />}
+            </div>
+
+            <div class="body">
+              {i === HEAVY ? (
+                <div class="heavy-card">
+                  <h3 class="heavy-title">{step.title}</h3>
+                  {step.bullets && (
+                    <ul class="bullets">
+                      {step.bullets.map((b) => (
+                        <li>
+                          <span class="dot" aria-hidden="true" />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <p class="heavy-body">{step.body}</p>
+                  <p class="heavy-kicker" lang="en">{step.kicker}</p>
+                </div>
+              ) : (
+                <>
+                  <h3 class="step-title">{step.title}</h3>
+                  <p class="step-body">{step.body}</p>
+                  <p class="kicker" lang="en">{step.kicker}</p>
+                </>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <a
+      class="cta cta-mobile"
+      href={whatsappLink(waMessage)}
+      target="_blank"
+      rel="noopener"
+      data-cta="process-whatsapp"
+    >
+      {t("process.cta")}
+    </a>
+  </div>
+</section>
+
+<style>
+  .process {
+    background: #fff;
+    padding-block: 34px;
+  }
+
+  .head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h3);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .cross {
+    color: var(--color-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 18px 0 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 14px;
+  }
+
+  .rail {
+    align-items: center;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+  }
+
+  .tile {
+    align-items: center;
+    background: var(--color-mist);
+    color: var(--color-forest);
+    display: flex;
+    flex: none;
+    font-size: var(--text-subhead);
+    font-weight: 800;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+  }
+  .step.heavy .tile {
+    background: var(--color-forest);
+    color: #fff;
+  }
+
+  .spine {
+    background: var(--color-spine);
+    flex: 1;
+    min-height: 22px;
+    width: 3px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 20px;
+  }
+  .step.heavy .body {
+    flex: 1;
+  }
+
+  .step-title {
+    color: var(--color-ink);
+    font-size: var(--text-subhead);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .step-body {
+    color: var(--color-body);
+    font-size: var(--text-body);
+  }
+
+  /* --- step 3 --- */
+  .heavy-card {
+    background: var(--color-forest);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 16px 16px 17px;
+  }
+  .heavy-title {
+    color: #fff;
+    font-size: var(--text-subhead);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .bullets li {
+    display: flex;
+    gap: 9px;
+  }
+  .dot {
+    background: #fff;
+    flex: none;
+    height: 7px;
+    margin-top: 7px;
+    width: 7px;
+  }
+  .bullets span:last-child {
+    color: #fff;
+    font-size: var(--text-body);
+    line-height: 1.5;
+  }
+  .heavy-body {
+    color: rgb(255 255 255 / 0.82);
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+  .heavy-kicker {
+    color: rgb(255 255 255 / 0.65);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cta {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    min-height: 56px;
+    padding-inline: 20px;
+    text-align: center;
+  }
+  .cta-mobile {
+    margin-top: 4px;
+  }
+  .cta-desktop {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .process {
+      padding-block: 64px;
+    }
+
+    .head {
+      align-items: flex-end;
+      display: flex;
+      gap: 40px;
+      justify-content: space-between;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+      max-width: 18ch;
+    }
+    .cta-desktop {
+      display: flex;
+      flex: none;
+      min-height: 54px;
+    }
+    .cta-mobile {
+      display: none;
+    }
+
+    /* The spine becomes one horizontal rule through all four tiles. */
+    .steps {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(4, 1fr);
+      padding-top: 34px;
+      position: relative;
+    }
+    .steps::before {
+      background: var(--color-spine);
+      content: "";
+      height: 3px;
+      left: 20px;
+      position: absolute;
+      right: 20px;
+      top: calc(34px + 20px);
+    }
+
+    .step {
+      flex-direction: column;
+      gap: 14px;
+    }
+    .rail {
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    .spine {
+      display: none;
+    }
+    .body {
+      gap: 5px;
+      padding-bottom: 0;
+    }
+    .step-title {
+      font-size: var(--text-step);
+    }
+    .heavy-card {
+      height: 100%;
+      padding: 18px;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# font sources — large upstream TTFs, re-downloaded by `npm run fonts:subset`.
+# The subsetted .woff2 files in public/fonts ARE committed: they are build inputs
+# for anyone who clones this and cannot run the Python step.
+scripts/.fontsrc/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# environment / secrets
+.env
+.env.*
+!.env.example
+server/config.php
+server/archive/*.xlsx
+
+# lighthouse + audit output
+lighthouse/
+*.report.html
+*.report.json
+
+# editors
+.vscode/
+.idea/
+*.swp
+
+# os
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# design source — reference only, not part of the build.
+# Comment this out if you want the baseline versioned with the code.
+design-baseline/
+*.zip

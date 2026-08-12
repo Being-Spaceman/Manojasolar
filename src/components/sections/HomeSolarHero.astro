@@ -1,0 +1,122 @@
+---
+/**
+ * Deliberately smaller than the B2B Hero.astro — no stats row, no photo
+ * slot, tighter padding. This page is the secondary path; it should read as
+ * secondary the moment it loads, not compete with the distributor hero.
+ */
+import { useTranslations } from "../../i18n/ui";
+import { localePath, type Locale } from "../../i18n/config";
+import { whatsappLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const crossLang = locale === "mr" ? "en" : "mr";
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला छतावरील सोलरचे दर हवे आहेत."
+    : "Hello, I would like a price for rooftop solar.";
+---
+
+<section class="hero">
+  <div class="wrap">
+    <p class="back">
+      <a href={localePath("/", locale)}>{t("homeSolar.backToTrade")}</a>
+    </p>
+
+    <p class="kicker">{t("homeSolar.hero.eyebrow")}</p>
+    <h1 class="headline">{t("homeSolar.hero.headline")}</h1>
+    <p class="subhead">{t("homeSolar.hero.subhead")}</p>
+    <p class="cross" lang={crossLang}>{t("homeSolar.hero.cross")}</p>
+
+    <a
+      class="cta"
+      href={whatsappLink(waMessage)}
+      target="_blank"
+      rel="noopener"
+      data-cta="homesolar-hero-whatsapp"
+    >
+      {t("homeSolar.hero.cta")}
+    </a>
+
+    <p class="note">{t("homeSolar.hero.note")}</p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-paper);
+    padding-block: 20px 28px;
+  }
+
+  .back {
+    margin-bottom: 14px;
+  }
+  .back a {
+    color: var(--color-green);
+    font-size: var(--text-small);
+    font-weight: 700;
+  }
+
+  .headline {
+    color: var(--color-forest);
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: 1.32;
+    margin-top: 8px;
+  }
+
+  .subhead {
+    color: var(--color-ink);
+    font-size: var(--text-lead);
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .cross {
+    color: var(--color-body);
+    font-size: var(--text-cross);
+    line-height: 1.6;
+    margin-top: 6px;
+  }
+
+  .cta {
+    align-items: center;
+    background: var(--color-red);
+    color: #fff;
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 16px;
+    min-height: 54px;
+    padding-inline: 16px;
+    text-align: center;
+  }
+
+  .note {
+    color: var(--color-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-top: 12px;
+    max-width: 48ch;
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      padding-block: 32px 40px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+      max-width: 22ch;
+    }
+    .cta {
+      align-self: flex-start;
+      min-width: 280px;
+    }
+  }
+</style>

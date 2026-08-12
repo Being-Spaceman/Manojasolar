@@ -1,0 +1,58 @@
+---
+/**
+ * GA4 loader + the click listener that finally reads the 14 `data-cta`
+ * attributes that have sat unwired since v1. Renders nothing — and loads no
+ * third-party script — until GA_MEASUREMENT_ID in src/data/analytics.ts is a
+ * real ID. No new dependency: this is the plain gtag.js snippet, not a
+ * package.
+ */
+import { GA_MEASUREMENT_ID, analyticsEnabled } from "../../data/analytics";
+
+const enabled = analyticsEnabled() && import.meta.env.PROD;
+---
+
+{
+  enabled && (
+    <>
+      {/* is:inline — a remote script tag Astro should not try to bundle. */}
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+      />
+      <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        // Assigned onto window, not a module-scoped function — the delegated
+        // click listener below (and any future gtag call) needs to reach it
+        // as a real global, which an Astro-processed <script> would not give
+        // a plain top-level function declaration.
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag("js", new Date());
+        window.gtag("config", GA_MEASUREMENT_ID, { anonymize_ip: true });
+      </script>
+    </>
+  )
+}
+
+<script>
+  // Delegated, not one listener per element: the 14 data-cta hooks live across
+  // every section and this survives new ones being added without touching
+  // this file again. Fires whether or not GA is actually loaded above, so
+  // switching to Plausible or anything else later only means changing what
+  // this listener calls, not re-instrumenting every button.
+  document.addEventListener("click", (e) => {
+    const el = (e.target as HTMLElement)?.closest<HTMLElement>("[data-cta]");
+    if (!el) return;
+
+    const ctaId = el.dataset.cta;
+    const w = window as typeof window & { gtag?: (...args: unknown[]) => void };
+    if (typeof w.gtag === "function") {
+      w.gtag("event", "cta_click", {
+        cta_id: ctaId,
+        page_path: location.pathname,
+      });
+    }
+  });
+</script>

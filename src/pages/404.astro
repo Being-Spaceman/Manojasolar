@@ -1,0 +1,21 @@
+---
+import SimplePage from "../components/SimplePage.astro";
+import { useTranslations } from "../i18n/ui";
+
+// Astro emits this as /404.html, which Hostinger's Apache serves automatically.
+// It is Marathi because that is the default locale; an English visitor who hits it
+// still has the language toggle in the header.
+const t = useTranslations("mr");
+---
+
+<SimplePage
+  locale="mr"
+  title={t("meta.notFound.title")}
+  description={t("meta.notFound.description")}
+  path="/404"
+  headline={t("notFound.headline")}
+  homeLabel={t("notFound.home")}
+  noindex
+>
+  <p>{t("notFound.body")}</p>
+</SimplePage>

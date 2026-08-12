@@ -1,0 +1,30 @@
+{
+  "name": "manoja-solar",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Manoja Agencies — Waaree rooftop solar dealer, Latur, Maharashtra. Bilingual Marathi/English lead-generation site.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run fonts:verify && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "fonts:subset": "python scripts/subset_fonts.py",
+    "fonts:verify": "python scripts/subset_fonts.py --verify",
+    "images": "python scripts/make_images.py",
+    "audit": "node scripts/audit.mjs",
+    "test:overflow": "node scripts/overflow-test.mjs",
+    "test:sticky": "node scripts/sticky-test.mjs",
+    "shots": "node scripts/shots.mjs",
+    "test": "npm run fonts:verify && npm run test:overflow && npm run test:sticky"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.16.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "lighthouse": "^13.4.1",
+    "tailwindcss": "^4.1.18"
+  }
+}
