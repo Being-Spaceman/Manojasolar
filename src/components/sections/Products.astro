@@ -1,9 +1,9 @@
 ---
 /**
  * New section, B2B restructure. No prices anywhere — every card routes to
- * WhatsApp. Mounting gets one line and nothing more: structure choice
- * depends on site observation and the vendor decides it, so this is
- * deliberately not a spec table.
+ * WhatsApp. No mounting structures — Manoja Agencies does not sell those;
+ * the four items below (panels, inverters, cables, accessories) are the
+ * full catalogue, in the fixed order the photos array below matches.
  */
 import { useTranslations, useList } from "../../i18n/ui";
 import { type Locale } from "../../i18n/config";
@@ -19,6 +19,14 @@ const list = useList(locale);
 
 const items = list<{ title: string; body: string }>("products.items");
 const crossLang = locale === "mr" ? "en" : "mr";
+
+// Stand-in stock photos (free-to-use, Pexels license), one per item above, in order.
+const photos = [
+  { src: "/images/product-panels.jpg", w: 1000, h: 668 },
+  { src: "/images/product-inverters.jpg", w: 1000, h: 1437 },
+  { src: "/images/product-cables.jpg", w: 1000, h: 668 },
+  { src: "/images/product-accessories.jpg", w: 1000, h: 1497 },
+];
 
 function waMessageFor(title: string): string {
   return locale === "mr"
@@ -36,13 +44,17 @@ function waMessageFor(title: string): string {
 
     <ul class="grid">
       {
-        items.map((item) => (
+        items.map((item, i) => (
           <li class="card">
-            {/*
-              TODO(MNJ): real product photo. Fixed aspect-ratio so dropping one in
-              causes zero layout shift — same discipline as the hero photo slot.
-            */}
-            <div class="photo" role="img" aria-label={item.title} />
+            <img
+              class="photo"
+              src={photos[i].src}
+              alt={item.title}
+              width={photos[i].w}
+              height={photos[i].h}
+              loading="lazy"
+              decoding="async"
+            />
             <h3 class="title">{item.title}</h3>
             <p class="body">{item.body}</p>
             <a
@@ -116,12 +128,10 @@ function waMessageFor(title: string): string {
 
   .photo {
     aspect-ratio: 4 / 3;
-    background-image: repeating-linear-gradient(
-      135deg,
-      #efede6 0 8px,
-      #f8f7f3 8px 16px
-    );
+    height: auto;
     margin: -18px -18px 4px;
+    object-fit: cover;
+    width: calc(100% + 36px);
   }
 
   .title {

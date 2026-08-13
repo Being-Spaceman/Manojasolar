@@ -9,8 +9,8 @@
 
   "meta": {
     "home": {
-      "title": "Waaree Solar Distributor in Latur | Panels, Inverters, Structures — Manoja Agencies",
-      "description": "Manoja Agencies — authorised Waaree Energies channel partner in Latur. Panels, inverters, mounting structures and cables, held in stock and collected the same day. For dealers, resellers and installers."
+      "title": "Waaree Solar Distributor in Latur | Panels, Inverters, Cables — Manoja Agencies",
+      "description": "Manoja Agencies — authorised Waaree Energies channel partner in Latur. Panels, inverters, cables and accessories, held in stock and collected the same day. For dealers, resellers and installers."
     },
     "thankYou": {
       "title": "Thank you — we will call you back | Manoja Agencies",
@@ -46,7 +46,7 @@
   "hero": {
     "eyebrow": "Authorised Waaree channel partner · Latur",
     "headline": "Authorised Waaree stock, held in Latur. Collected the same day.",
-    "subhead": "Panels, inverters, mounting structures and cables for dealers, resellers and installers — not price, logistics.",
+    "subhead": "Panels, inverters, cables and accessories for dealers, resellers and installers — not price, logistics.",
     "cross": "वारीचा अधिकृत साठा, लातूरमध्ये उपलब्ध. त्याच दिवशी घेऊन जा.",
     "cta": "Check stock on WhatsApp",
     "callPrefix": "or call",
@@ -70,7 +70,7 @@
     "marks": [
       {
         "title": "Authorised Waaree stock",
-        "sub": "Panels, inverters, structures and cables — one supplier, full range"
+        "sub": "Panels, inverters, cables and accessories — one supplier, full range"
       },
       {
         "title": "Held in Latur",
@@ -87,8 +87,8 @@
 
   "products": {
     "kicker": "In stock",
-    "headline": "Panels, inverters, structures, cables.",
-    "cross": "पॅनेल, इन्व्हर्टर, स्ट्रक्चर, केबल्स — सर्व साठ्यात.",
+    "headline": "Panels, inverters, cables, accessories.",
+    "cross": "पॅनेल, इन्व्हर्टर, केबल्स, अ‍ॅक्सेसरीज — सर्व साठ्यात.",
     "note": "No prices listed here — every order is quoted on WhatsApp against what's in stock that day.",
     "items": [
       {
@@ -100,12 +100,12 @@
         "body": "Waaree inverters across capacities, for residential and commercial systems."
       },
       {
-        "title": "Mounting structures",
-        "body": "Elevated high-rise and custom, specified per site."
+        "title": "Cables",
+        "body": "DC/AC cable for the full balance-of-system list."
       },
       {
-        "title": "Cables & accessories",
-        "body": "DC/AC cable, connectors, earthing and the rest of the balance-of-system list."
+        "title": "Accessories",
+        "body": "Connectors, earthing and the rest of the balance-of-system list."
       }
     ],
     "cta": "Ask on WhatsApp"
@@ -130,7 +130,7 @@
       },
       {
         "title": "Full range, one supplier",
-        "body": "Panels, inverters, structures and cables from a single billing relationship, not four."
+        "body": "Panels, inverters, cables and accessories from a single billing relationship, not four."
       }
     ]
   },
@@ -143,7 +143,7 @@
     "steps": [
       {
         "title": "Enquiry",
-        "body": "Tell us what you need — panels, inverters, structures, cables — and how much.",
+        "body": "Tell us what you need — panels, inverters, cables, accessories — and how much.",
         "kicker": "Enquiry"
       },
       {
@@ -163,7 +163,7 @@
       },
       {
         "title": "Support",
-        "body": "Warranty claims go through us — we are the authorised channel partner on record.",
+        "body": "Warranty claims go straight to Waaree — download and register on the Waaree Support app, and the manufacturer takes it from there.",
         "kicker": "Support"
       }
     ]
@@ -191,11 +191,11 @@
       },
       {
         "q": "What if something under warranty fails?",
-        "a": "As the authorised Waaree channel partner, we handle the claim directly — you don't chase the manufacturer yourself."
+        "a": "Download and register on the Waaree Support app — as the manufacturer, Waaree handles the claim directly. We're happy to help you get registered if you're not sure how."
       },
       {
         "q": "Do you provide technical support?",
-        "a": "Yes — on system sizing, structure choice and product selection. Mounting structure specifics depend on the site, so we talk that through per order rather than publishing a spec sheet."
+        "a": "Yes — on system sizing and product selection, so you order the right capacity and combination the first time."
       },
       {
         "q": "I'm a homeowner, not a dealer — can you help me?",
@@ -228,8 +228,8 @@
       "productOptions": [
         { "value": "panels", "label": "Panels" },
         { "value": "inverters", "label": "Inverters" },
-        { "value": "mounting", "label": "Mounting structures" },
-        { "value": "cables", "label": "Cables & accessories" }
+        { "value": "cables", "label": "Cables" },
+        { "value": "accessories", "label": "Accessories" }
       ],
       "gstin": "GSTIN (optional)",
       "gstinPlaceholder": "27AAAAA0000A1Z5",
@@ -301,7 +301,7 @@
     "gstLabel": "GST number",
     "privacy": "Privacy policy",
     "copyright": "© {year} Manoja Agencies, Latur.",
-    "builtNote": "Authorised Waaree stock — panels, inverters, structures and cables — supplied to dealers, resellers and installers in Latur."
+    "builtNote": "Authorised Waaree stock — panels, inverters, cables and accessories — supplied to dealers, resellers and installers in Latur."
   },
 
   "thankYou": {
@@ -371,8 +371,8 @@
           "body": "Panels with a 25-year performance warranty, backed by the manufacturer, not by us alone."
         },
         {
-          "title": "Service stays local",
-          "body": "Two checks a year and a shop in Latur you can walk into. Repairs do not wait on a ticket queue."
+          "title": "We get you set up with Waaree",
+          "body": "We register your system on the Waaree Support app at installation, so service and warranty requests go straight to the manufacturer — and our shop in Latur is here if you need a hand."
         }
       ]
     },
@@ -398,7 +398,7 @@
         },
         {
           "q": "What if a panel stops working?",
-          "a": "Waaree panels carry a 25-year performance warranty and the inverter carries its own manufacturer warranty. We are the authorised channel partner, so the claim goes through us and our shop is in Latur."
+          "a": "Waaree panels carry a 25-year performance warranty and the inverter carries its own manufacturer warranty. Download and register on the Waaree Support app — the claim goes directly to Waaree, not through us. We register it for you at installation, and our shop is in Latur if you need a hand."
         },
         {
           "q": "Can a shop or small business get this?",

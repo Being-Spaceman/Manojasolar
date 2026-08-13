@@ -70,13 +70,20 @@ const crossLang = locale === "mr" ? "en" : "mr";
     </div>
 
     {/*
-      TODO(MNJ): replace with a real photo of the Latur godown / stock on shelf.
-      The aspect box is fixed so swapping the image in causes zero layout shift.
-      The page is designed to be carried by real photos, not stock photography.
+      Stand-in stock photo (free-to-use, Pexels license) until a real photo of the
+      Latur godown replaces it. The aspect box is fixed so that swap causes zero
+      layout shift.
     */}
-    <div class="photo" role="img" aria-label={t("hero.photoAlt")}>
-      <span class="kicker">photo — Latur godown / stock</span>
-    </div>
+    <img
+      class="photo"
+      src="/images/hero-stock.jpg"
+      alt={t("hero.photoAlt")}
+      width={1600}
+      height={1200}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
   </div>
 </section>
 
@@ -178,19 +185,13 @@ const crossLang = locale === "mr" ? "en" : "mr";
     margin: 0;
   }
 
-  /* Striped placeholder standing in for the real photograph. Fixed aspect ratio
-     so dropping the real image in shifts nothing. */
+  /* Fixed aspect ratio so the photo never shifts layout as it loads. */
   .photo {
-    align-items: center;
     aspect-ratio: 390 / 200;
-    background-image: repeating-linear-gradient(
-      135deg,
-      #efede6 0 8px,
-      #f8f7f3 8px 16px
-    );
-    display: flex;
-    justify-content: center;
+    height: auto;
     margin-top: 26px;
+    object-fit: cover;
+    width: 100%;
   }
 
   @media (min-width: 64rem) {
