@@ -13,6 +13,15 @@ const list = useList(locale);
 
 const stats = list<{ value: string; label: string }>("hero.stats");
 
+/** Split "15,000+" into a numeric target (15000) and its trailing suffix (+),
+ *  so the count-up script has something to animate toward. */
+function countupParts(value: string) {
+  return {
+    target: value.replace(/[^\d]/g, ""),
+    suffix: value.replace(/[\d,]/g, ""),
+  };
+}
+
 const waMessage =
   locale === "mr"
     ? "नमस्कार, मला साठ्याबद्दल विचारायचं आहे."
@@ -59,12 +68,17 @@ const crossLang = locale === "mr" ? "en" : "mr";
 
       <dl class="stats">
         {
-          stats.map((s) => (
-            <div class="stat">
-              <dt class="stat-value">{s.value}</dt>
-              <dd class="stat-label">{s.label}</dd>
-            </div>
-          ))
+          stats.map((s) => {
+            const { target, suffix } = countupParts(s.value);
+            return (
+              <div class="stat">
+                <dt class="stat-value" data-countup={target} data-suffix={suffix}>
+                  {s.value}
+                </dt>
+                <dd class="stat-label">{s.label}</dd>
+              </div>
+            );
+          })
         }
       </dl>
     </div>
@@ -86,6 +100,50 @@ const crossLang = locale === "mr" ? "en" : "mr";
     />
   </div>
 </section>
+
+{/*
+  Count from zero to the real figure once, on first scroll into view. The real
+  figure is already server-rendered above so nothing breaks without JS or
+  under reduced motion — this script only ever animates toward the number
+  that is already correct.
+*/}
+<script>
+  const els = document.querySelectorAll<HTMLElement>("[data-countup]");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (els.length && !reduced && "IntersectionObserver" in window) {
+    els.forEach((el) => {
+      el.textContent = "0" + (el.dataset.suffix ?? "");
+    });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target as HTMLElement;
+          io.unobserve(el);
+
+          const target = parseInt(el.dataset.countup ?? "0", 10);
+          const suffix = el.dataset.suffix ?? "";
+          const duration = 1200;
+          const start = performance.now();
+
+          function tick(now: number) {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3); // ease-out
+            const value = Math.round(target * eased);
+            el.textContent = value.toLocaleString("en-IN") + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    els.forEach((el) => io.observe(el));
+  }
+</script>
 
 <style>
   .hero {
@@ -175,7 +233,7 @@ const crossLang = locale === "mr" ? "en" : "mr";
     min-width: 0;
   }
   .stat-value {
-    color: var(--color-forest);
+    color: var(--color-amber-dark);
     font-size: var(--text-stat);
     font-weight: 800;
   }

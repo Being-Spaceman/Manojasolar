@@ -37,17 +37,6 @@ const waMessage =
         <h2 class="headline">{t("stock.headline")}</h2>
         <p class="cross" lang={crossLang}>{t("stock.cross")}</p>
 
-        <div class="proof">
-          <div class="figure-block">
-            <p class="figure">{t("stock.statVendors")}</p>
-            <p class="figure-label">{t("stock.statVendorsLabel")}</p>
-          </div>
-          <div class="figure-block">
-            <p class="figure">{t("stock.statDispatch")}</p>
-            <p class="figure-label">{t("stock.statDispatchLabel")}</p>
-          </div>
-        </div>
-
         <p class="note">{t("stock.note")}</p>
       </div>
 
@@ -155,29 +144,6 @@ const waMessage =
     color: rgb(255 255 255 / 0.88);
     font-size: var(--text-cross);
     line-height: 1.6;
-  }
-
-  .proof {
-    display: flex;
-    gap: 18px;
-    padding-top: 6px;
-  }
-  .figure-block {
-    border-top: 3px solid var(--color-green);
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding-top: 10px;
-  }
-  .figure {
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 22px;
-    font-weight: 700;
-  }
-  .figure-label {
-    color: rgb(255 255 255 / 0.78);
-    font-size: var(--text-caption);
   }
 
   .note {

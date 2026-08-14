@@ -1,0 +1,178 @@
+---
+/**
+ * The dealer's first real question: "do you have DCR in stock?" A subsidy
+ * job stalls without it. New section, not in v1 — full-bleed forest, between
+ * Products (sand) and Why us (sand) for the light/dark value rhythm.
+ */
+import { useTranslations, useList } from "../../i18n/ui";
+import { type Locale } from "../../i18n/config";
+import { whatsappLink } from "../../data/business";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const list = useList(locale);
+
+const columns = list<{ title: string; sub: string; specs: string[] }>("dcr.columns");
+const crossLang = locale === "mr" ? "en" : "mr";
+
+const waMessage =
+  locale === "mr"
+    ? "नमस्कार, मला DCR आणि Non-DCR पॅनेलबद्दल विचारायचं आहे."
+    : "Hello, I would like to ask about DCR and Non-DCR panels.";
+---
+
+<section class="dcr" id="dcr">
+  <div class="wrap">
+    <p class="kicker">{t("dcr.kicker")}</p>
+    <h2 class="headline">{t("dcr.headline")}</h2>
+    <p class="cross" lang={crossLang}>{t("dcr.cross")}</p>
+    <p class="note">{t("dcr.note")}</p>
+
+    <div class="columns">
+      {
+        columns.map((col) => (
+          <div class="col">
+            <h3 class="col-title">{col.title}</h3>
+            <p class="col-sub">{col.sub}</p>
+            <ul class="specs">
+              {col.specs.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="closing">{t("dcr.closing")}</p>
+
+    <a class="cta" href={whatsappLink(waMessage)} target="_blank" rel="noopener" data-cta="dcr-whatsapp">
+      {t("dcr.cta")}
+    </a>
+  </div>
+</section>
+
+<style>
+  .dcr {
+    background: var(--color-forest);
+    padding-block: 40px;
+  }
+
+  .kicker {
+    background: rgb(255 255 255 / 0.15);
+    color: #fff;
+    display: inline-flex;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    padding: 6px 10px;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    color: #fff;
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: 1.35;
+    margin-top: 14px;
+  }
+
+  .cross {
+    color: rgb(255 255 255 / 0.85);
+    font-size: var(--text-cross);
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+
+  .note {
+    color: rgb(255 255 255 / 0.78);
+    font-size: var(--text-body);
+    line-height: 1.55;
+    margin-top: 14px;
+    max-width: 56ch;
+  }
+
+  .columns {
+    display: grid;
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  .col {
+    background: rgb(255 255 255 / 0.06);
+    border-top: 3px solid var(--color-amber);
+    padding: 18px 18px 20px;
+  }
+
+  .col-title {
+    color: #fff;
+    font-size: var(--text-step);
+    font-weight: 800;
+  }
+
+  .col-sub {
+    color: rgb(255 255 255 / 0.75);
+    font-size: var(--text-chip);
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+
+  .specs {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+
+  .specs li {
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    color: rgb(255 255 255 / 0.92);
+    font-size: var(--text-body);
+    font-weight: 600;
+    padding-top: 8px;
+  }
+
+  .closing {
+    color: #fff;
+    font-size: var(--text-body);
+    font-weight: 700;
+    margin-top: 22px;
+  }
+
+  .cta {
+    align-items: center;
+    background: var(--color-amber);
+    color: var(--color-ink);
+    display: flex;
+    font-size: var(--text-cta);
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 14px;
+    min-height: 56px;
+    padding-inline: 20px;
+    text-align: center;
+  }
+
+  @media (min-width: 64rem) {
+    .dcr {
+      padding-block: 64px;
+    }
+    .headline {
+      font-size: var(--text-h2-lg);
+    }
+    .columns {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .cta {
+      align-self: flex-start;
+      min-width: 320px;
+    }
+  }
+</style>

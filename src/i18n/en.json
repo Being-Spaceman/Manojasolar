@@ -56,9 +56,9 @@
     "callPrefix": "or call",
     "photoAlt": "Waaree solar stock at the Manoja Agencies godown in Latur",
     "stats": [
-      { "value": "500+", "label": "vendors supplied" },
-      { "value": "Same-day", "label": "dispatch" },
-      { "value": "Full range", "label": "in stock" }
+      { "value": "250+", "label": "Authorised selling partners" },
+      { "value": "15,000+", "label": "Sites powered by material we supplied" },
+      { "value": "100+", "label": "Installations executed by our own team" }
     ]
   },
 
@@ -66,10 +66,6 @@
     "kicker": "Stock & dispatch",
     "headline": "The advantage isn't price. It's that the stock is already here.",
     "cross": "आमच्याकडे साठा आधीच लातूरमध्ये आहे — तुम्हाला थांबावं लागत नाही.",
-    "statVendors": "500+",
-    "statVendorsLabel": "vendors supplied",
-    "statDispatch": "Same day",
-    "statDispatchLabel": "dispatch from our godown",
     "note": "Every authorised dealer can quote a price. Very few can hand it to you the same afternoon.",
     "marks": [
       {
@@ -113,6 +109,27 @@
       }
     ],
     "cta": "Ask on WhatsApp"
+  },
+
+  "dcr": {
+    "kicker": "DCR & Non-DCR",
+    "headline": "\"Do you have DCR in stock?\" Yes — and Non-DCR too.",
+    "cross": "पीएम सूर्य घर सबसिडीसाठी DCR आवश्यक — दोन्ही आमच्याकडे साठ्यात.",
+    "note": "DCR (Domestic Content Requirement) panels are mandatory for PM Surya Ghar subsidy work. Non-DCR panels are for commercial and non-subsidy projects. Stocking both, in depth, means one order covers either job.",
+    "columns": [
+      {
+        "title": "DCR",
+        "sub": "Required for PM Surya Ghar subsidy work",
+        "specs": ["Bi-facial, 500–590 W", "TOPCon bi-facial, 500–590 W"]
+      },
+      {
+        "title": "Non-DCR",
+        "sub": "For commercial and non-subsidy projects",
+        "specs": ["TOPCon, 585–615 W", "Mono-PERC, 545 W"]
+      }
+    ],
+    "closing": "Both in stock. Quoted on WhatsApp.",
+    "cta": "Ask which one you need"
   },
 
   "why": {
