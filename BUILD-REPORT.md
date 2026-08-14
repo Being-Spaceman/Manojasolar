@@ -6,6 +6,26 @@ mid-build. Prior sessions had already completed a large share of this work
 against the brief, then closed the highest-priority gaps it found. **The
 brief is not fully complete** — see §6 below for exactly what's left.
 
+## 0. Hero image (2026-08-14, follow-up session)
+
+`public/images/hero-stock.jpg` is a **licensed stock placeholder** (aerial
+photo of a solar array), not a photo of the Latur godown. It was dropped
+into `dist/images/` by mistake (that directory is regenerated on every
+build and would have silently lost the file) and has been moved to
+`public/images/hero-stock.jpg`, overwriting the previous placeholder there.
+
+The path is now a single named constant, `HERO_IMAGE` in
+`src/data/media.ts`, referenced from `Hero.astro` — swap the constant's
+value (and drop the new file in `public/images/`) once the owner's own
+godown photography exists; no component code needs to change.
+
+Note: the task that requested this move specified `public/photos/`, but the
+codebase's actual convention — and what `Hero.astro` already referenced —
+is `public/images/` (`public/photos/` is reserved for real, non-stock
+photography and is currently empty, having previously held street-view
+captures that were deleted for licensing reasons in the Phase 1 truth
+pass). Used `public/images/` so no component edit was needed, as requested.
+
 ## 1. What changed this session
 
 **Phase 1 — Truth pass**

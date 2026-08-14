@@ -2,6 +2,7 @@
 import { useTranslations, useList } from "../../i18n/ui";
 import { type Locale } from "../../i18n/config";
 import { BUSINESS, whatsappLink, telLink } from "../../data/business";
+import { HERO_IMAGE } from "../../data/media";
 
 interface Props {
   locale: Locale;
@@ -90,7 +91,7 @@ const crossLang = locale === "mr" ? "en" : "mr";
     */}
     <img
       class="photo"
-      src="/images/hero-stock.jpg"
+      src={HERO_IMAGE}
       alt={t("hero.photoAlt")}
       width={1600}
       height={1200}
