@@ -55,6 +55,7 @@
   --color-red: #e1261c; /* CTA ONLY. See the rule below. */
 
   /* --- working surfaces and greys --------------------------------------- */
+  --color-bg: #f5faf7; /* page background — a hair off white, green-tinted */
   --color-mist: #eaf3ed; /* green-tint plate: chips, step tiles, table highlight */
   --color-spine: #d6e5dc; /* process connector */
   --color-hair: #edebe4; /* hairline divider */
@@ -169,7 +170,7 @@
   }
 
   body {
-    background: #ffffff;
+    background: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);

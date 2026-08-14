@@ -63,6 +63,12 @@ const nav = onHomeSolar
   .hdr {
     background: var(--color-green);
     color: #fff;
+    /* Sticky, not fixed: it participates in normal flow until scrolled past, so
+       it never overlaps the hero on first paint or needs a manual body-padding
+       offset the way a fixed bar would. */
+    position: sticky;
+    top: 0;
+    z-index: 50;
   }
 
   .hdr-inner {
