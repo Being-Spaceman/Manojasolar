@@ -6,9 +6,13 @@ import LangToggle from "./LangToggle.astro";
 interface Props {
   locale: Locale;
   path: string;
+  /** Homepage only: floats translucent over the full-bleed hero, then
+   *  switches to solid once Hero.astro's sentinel scrolls past (see the
+   *  IntersectionObserver in Hero.astro's second inline script). */
+  floating?: boolean;
 }
 
-const { locale, path } = Astro.props;
+const { locale, path, floating = false } = Astro.props;
 const t = useTranslations(locale);
 
 /*
@@ -33,7 +37,7 @@ const nav = onHomeSolar
     ];
 ---
 
-<header class="hdr">
+<header class:list={["hdr", { floating }]} data-floating-header={floating || undefined}>
   <div class="hdr-inner wrap">
     {/*
       Logo slot. The identity's stacked lockup: म tile + Devanagari name leading,
@@ -74,6 +78,28 @@ const nav = onHomeSolar
     position: sticky;
     top: 0;
     z-index: 50;
+  }
+
+  /* Detached, translucent overlay while the full-bleed hero is in view.
+     Fixed (not sticky) with a small inset so it visibly floats rather than
+     sitting flush — square corners throughout, never a pill. Goes solid via
+     .is-solid once Hero.astro's IntersectionObserver reports the hero has
+     scrolled past, so nav text keeps its contrast over whatever content
+     follows instead of staying translucent over a light section. */
+  .hdr.floating {
+    background: rgb(11 31 23 / 0.55);
+    inset-inline: 12px;
+    position: fixed;
+    top: 12px;
+    transition: background 0.2s ease-out;
+  }
+  .hdr.floating.is-solid {
+    background: var(--color-ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hdr.floating {
+      transition: none;
+    }
   }
 
   .hdr-inner {

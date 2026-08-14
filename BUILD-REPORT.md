@@ -128,6 +128,90 @@ credit added earlier this session (0.5 alpha white on `--color-forest`
 measured 3.86:1, below AA's 4.5:1 for that text size). Raised to 0.72 alpha;
 `color-contrast` audit now passes (binary score 1) sitewide.
 
+## 0b. Hero rebuild — full-bleed (2026-08-14, same follow-up session)
+
+Replaced the side-by-side hero (text left, image right) with a full-bleed
+photo treatment. Below the fold is untouched — no rounded corners, glass or
+gradients propagated into any other section.
+
+**Structure:** full-bleed `<Picture>` background at `min-height: 100svh`
+(`svh`, so the hero doesn't jump when mobile browser chrome collapses),
+`object-fit: cover` with `object-position: 50% 65%` so the panel rows rather
+than empty sky carry the crop; a gradient scrim over it; oversized display
+headline; and a floating info card carrying the eyebrow, the three stats,
+the amber CTA and the `tel:` link.
+
+**Headline:** `clamp(3rem, 1.67rem + 5.93vw, 7rem)`, `line-height: 0.95`,
+`-0.02em` tracking on Latin. Line breaks are set deliberately via `<br>` in
+the i18n string so "held in Latur" and "the same day" each carry their own
+line rather than reflowing arbitrarily. Devanagari gets `line-height: 1.15`
+separately — at 7rem with Latin's 0.95 the matras above "साठा"/"त्याच"
+collide with the शिरोरेखा of the line below. (Devanagari letter-spacing is
+already globally zeroed by the existing `:lang(mr)` rule.) Centred on
+desktop, left-aligned on mobile.
+
+**Info card:** solid `rgb(11 31 23 / 0.92)` — no `backdrop-filter`, per the
+constraint; square corners. Stats are a fixed 3-column grid so labels wrap
+inside their own column and the row never becomes two (the regression fixed
+in the previous session, deliberately preserved). Count-up animation moved
+with them and still fires once on first view.
+
+**Header:** on the homepage only, detaches to `position: fixed` with a 12px
+inset and a translucent `rgb(11 31 23 / 0.55)` background, then switches to
+solid `--color-ink` once the hero scrolls past — driven by an
+`IntersectionObserver` on the hero section itself. Verified across the full
+scroll cycle: translucent at load → translucent mid-hero → solid past hero →
+translucent again on scroll back. All four nav items, the distinct "Home
+solar" link and the मराठी/English toggle are unchanged, and every other page
+keeps the normal solid sticky header (`floating` is opt-in per page).
+
+**Contrast — measured from rendered pixels, not assumed.** Sampled the
+actual screenshot buffer at each text location and computed WCAG ratios:
+
+| Pair | Ratio | Requirement | |
+|---|---|---|---|
+| CTA: ink text on amber | **8.47:1** | 4.5:1 | ✓ |
+| Card eyebrow: amber on card | **8.11:1** | 4.5:1 | ✓ |
+| Card stat labels: white on card | **16.82:1** | 4.5:1 | ✓ |
+| Headline: white on scrim, worst case | **4.12:1** | 3:1 (large text) | ✓ |
+
+The headline measurement caught a real failure. With the originally
+specified scrim (70% ink at bottom → 20% at top), the top headline line sat
+over a bright sky patch measuring **1.98:1** — below even the 3:1 large-text
+minimum. Fixed by strengthening the scrim to 80% → 48% and adding a
+`text-shadow` to the headline. Both were needed: the scrim alone can't
+guarantee AA against an *unknown future replacement photo*, which was the
+stated purpose of having a scrim at all, so the text now also carries its
+own contrast independent of what sits behind it. (A text-shadow on a few
+large glyphs is cheap — unlike a `backdrop-filter`, which is a real GPU cost
+and is not used anywhere.)
+
+**Deviation from the brief, flagged:** the scrim opacities are 80%/48%, not
+the specified 70%/20%. The specified values did not clear WCAG AA against
+this photograph, and the constraint "WCAG AA on every text/background pair,
+verified not assumed" was explicitly non-negotiable, so contrast won.
+
+**Verification:** `npm test` passes (16 width/locale combinations, no
+overflow at any width including 360px in both locales; 6/6 sticky-bar
+checks). Reduced-motion confirmed by emulating `prefers-reduced-motion:
+reduce` — stats render their final values immediately with no count-up.
+
+**Lighthouse after the rebuild — mobile, simulated slow 4G:**
+
+| | Before session | After images (§0a) | After hero rebuild |
+|---|---|---|---|
+| `/` Performance | 76 | 91 | **91** |
+| `/en/` Performance | 78 | 93 | **93** |
+| `/` LCP | 6.2s | 3.2s | **3.2s** |
+| `/en/` LCP | 6.0s | 3.1s | **3.1s** |
+| CLS both | 0 | 0 | **0** |
+| Accessibility | 97 | 100 | **100** |
+
+Definition of done met: build passes, mobile performance above 0.90 on both
+locales, CLS at 0. The hero rebuild cost nothing measurable — the background
+image is the same asset the preload already covers, and the only new script
+is the header's IntersectionObserver toggle.
+
 ## 1. What changed this session
 
 **Phase 1 — Truth pass**

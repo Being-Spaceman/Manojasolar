@@ -16,6 +16,8 @@ interface Props {
   noindex?: boolean;
   /** Thank-you and 404 do not need the sticky bar competing with their own CTA. */
   sticky?: boolean;
+  /** Homepage only — see the `floating` prop on Header.astro. */
+  floatingHeader?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   path,
   noindex = false,
   sticky = true,
+  floatingHeader = false,
 } = Astro.props;
 
 const t = useTranslations(locale);
@@ -73,7 +76,7 @@ const t = useTranslations(locale);
   <body>
     <a href="#main" class="skip">{t("nav.skipToContent")}</a>
 
-    <Header locale={locale} path={path} />
+    <Header locale={locale} path={path} floating={floatingHeader} />
 
     <main id="main">
       <slot />
