@@ -1,8 +1,15 @@
 ---
+import { Picture } from "astro:assets";
 import { useTranslations, useList } from "../../i18n/ui";
 import { type Locale } from "../../i18n/config";
 import { BUSINESS, whatsappLink, telLink } from "../../data/business";
 import { HERO_IMAGE } from "../../data/media";
+
+/** Matches the .photo column at each breakpoint — see the sizes attribute
+ *  below. Kept as a constant so the <link rel="preload"> in Base.astro can
+ *  request the exact same width list and never double-download. */
+export const HERO_WIDTHS = [640, 960, 1440, 1920];
+export const HERO_SIZES = "(min-width: 64rem) 503px, 100vw";
 
 interface Props {
   locale: Locale;
@@ -89,12 +96,16 @@ const crossLang = locale === "mr" ? "en" : "mr";
       Latur godown replaces it. The aspect box is fixed so that swap causes zero
       layout shift.
     */}
-    <img
+    <Picture
       class="photo"
       src={HERO_IMAGE}
       alt={t("hero.photoAlt")}
-      width={1600}
-      height={1200}
+      width={1920}
+      widths={HERO_WIDTHS}
+      sizes={HERO_SIZES}
+      formats={["webp"]}
+      fallbackFormat="jpg"
+      quality={50}
       loading="eager"
       fetchpriority="high"
       decoding="async"
@@ -242,6 +253,13 @@ const crossLang = locale === "mr" ? "en" : "mr";
     font-size: 11px;
     line-height: 1.3;
     margin: 0;
+  }
+
+  /* Picture renders a <picture> wrapper around the <img class="photo">; without
+     this the wrapper (an inline element by default) breaks the grid-item sizing
+     that used to apply directly to the <img>. */
+  .hero-grid > picture {
+    display: contents;
   }
 
   /* Fixed aspect ratio so the photo never shifts layout as it loads. */

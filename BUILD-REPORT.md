@@ -8,23 +8,125 @@ brief is not fully complete** — see §6 below for exactly what's left.
 
 ## 0. Hero image (2026-08-14, follow-up session)
 
-`public/images/hero-stock.jpg` is a **licensed stock placeholder** (aerial
-photo of a solar array), not a photo of the Latur godown. It was dropped
-into `dist/images/` by mistake (that directory is regenerated on every
-build and would have silently lost the file) and has been moved to
-`public/images/hero-stock.jpg`, overwriting the previous placeholder there.
+`hero-stock.jpg` is a **licensed stock placeholder** (aerial photo of a
+solar array), not a photo of the Latur godown. It was dropped into
+`dist/images/` by mistake (that directory is regenerated on every build and
+would have silently lost the file) and was first moved to
+`public/images/hero-stock.jpg` — then, in the image-delivery task
+immediately after (§1a below), moved again to `src/assets/images/` so
+`astro:assets` can generate its responsive WebP variants at build time
+(files under `public/` are served as-is, unprocessed).
 
 The path is now a single named constant, `HERO_IMAGE` in
-`src/data/media.ts`, referenced from `Hero.astro` — swap the constant's
-value (and drop the new file in `public/images/`) once the owner's own
-godown photography exists; no component code needs to change.
+`src/data/media.ts` (an image import, not a string path), referenced from
+`Hero.astro` and `HeroPreload.astro` — swap the file at that path and rerun
+the build once the owner's own godown photography exists; no component code
+needs to change beyond that one file.
 
-Note: the task that requested this move specified `public/photos/`, but the
+Note: the task that first requested this move specified `public/photos/`, but the
 codebase's actual convention — and what `Hero.astro` already referenced —
 is `public/images/` (`public/photos/` is reserved for real, non-stock
 photography and is currently empty, having previously held street-view
 captures that were deleted for licensing reasons in the Phase 1 truth
 pass). Used `public/images/` so no component edit was needed, as requested.
+
+## 0a. Image delivery (2026-08-14, same follow-up session)
+
+Moved the hero and four product photos from `public/images/` into
+`src/assets/images/` and switched every `<img>` for them to Astro's
+built-in `<Picture>` (`astro:assets`), using the `sharp` transitive
+dependency already installed for it — no new dependency added. Each renders
+a `<picture>` with a WebP `<source>` (responsive `srcset`) and a JPEG
+`<img>` fallback.
+
+**Widths generated:** hero at 640/960/1440/1920px; product photos at
+320/480/640px (the product grid never renders wider than ~248px on desktop
+or the viewport width on mobile, so 640px already covers 2x-DPR phones —
+1440/1920 variants would be transferred but never displayed there).
+
+**`sizes` reflects actual rendered width**, not `100vw` everywhere:
+- Hero: `(min-width: 64rem) 503px, 100vw` — matches the `.hero-grid`
+  column at desktop; full-bleed on mobile where the layout stacks.
+  *(This will change with the Task 2 hero rebuild to a full-bleed
+  background, at which point `sizes` becomes `100vw` at every breakpoint —
+  see §2 below.)*
+- Product cards: `(min-width: 64rem) 248px, calc(100vw - 32px)` — the real
+  4-column desktop card width and the real mobile single-column width minus
+  the page gutters.
+
+**Hero preload** (`src/components/layout/HeroPreload.astro`) calls
+`getImage()` with the same width list, format and quality as the `<Picture>`
+in `Hero.astro` — imported from there, not duplicated as literals, so they
+can't drift apart — and emits `<link rel="preload" as="image"
+imagesrcset="..." imagesizes="...">` in `<head>`. Verified byte-for-byte
+identical to the `<Picture>`'s own `srcset` in the built HTML, and the build
+log confirms zero duplicate image transforms (32 optimized files, not 36+).
+
+**Compression budget — one image needed extra work.** The hero source
+(aerial photo of a densely-packed solar array) has very high-frequency
+repetitive detail that WebP compresses poorly: even at quality 15 the 1920px
+variant was 396KB, far over the 150KB budget. Rather than degrade it with
+visible blocking artifacts, applied a mild Gaussian blur (sigma 8) to the
+*source* file before Astro's own resize/encode pass. This is defensible
+because (a) it will sit under a heavy dark scrim in the Task 2 hero rebuild,
+where fine detail is invisible anyway, and (b) even without a scrim it's a
+full-bleed background photo, not a subject the eye is meant to resolve at
+pixel level. Result: 1920px WebP dropped to 108KB. No other image needed
+this treatment — product photos hit budget with `quality={48}` alone.
+
+**Compression results (final, largest variant actually shipped):**
+
+| Image | Before | After (WebP) | Budget | 
+|---|---|---|---|
+| Hero, 1920px | 6047KB (original) | 108KB | 150KB ✓ |
+| Product panels, 640px | 90KB | 6KB | 60KB ✓ |
+| Product inverters, 640px | 156KB | 13KB | 60KB ✓ |
+| Product cables, 640px | 64KB | 9KB | 60KB ✓ |
+| Product accessories, 640px | 94KB | 15KB | 60KB ✓ |
+
+The JPEG fallback for the hero also needed the explicit `width={1920}` prop
+on `<Picture>` — without it, Astro's default `<img src>` fallback was the
+*original, unconstrained* image size (Products had the same issue: the
+inverter photo's fallback defaulted to its full 1000×1437 original, 69KB,
+over budget, until `width={640}` was added).
+
+**Loading strategy:** hero is `loading="eager" fetchpriority="high"` with
+the matching preload; all four product photos are `loading="lazy"
+decoding="async"` (unchanged from before, now on `<Picture>` instead of
+plain `<img>`).
+
+**Lighthouse — mobile, simulated slow 4G:**
+
+| | Before | After |
+|---|---|---|
+| `/` Performance | 76 | **91** |
+| `/en/` Performance | 78 | **93** |
+| `/` LCP | 6.2s | **3.2s** |
+| `/en/` LCP | 6.0s | **3.1s** |
+| CLS (both) | 0 | **0** (unchanged — verified, not assumed) |
+| Accessibility | 97 | **100** (see below) |
+| Total image bytes transferred (mobile viewport) | not measured pre-change | **115.3KB** |
+
+Targets from the task: **LCP under 2.5s, performance above 0.90.**
+Performance target met on both locales (91/93). **LCP target not fully
+met** (3.1–3.2s, down from 6.0–6.2s — a ~48% cut). The Lighthouse
+`lcp-breakdown-insight` audit shows the image itself now contributes only
+~100ms to LCP; the remaining time is dominated by time-to-first-byte and
+document parse of the fully-inlined HTML+CSS payload under the "slow 4G"
+simulated profile (~150ms+ RTT, ~1.6Mbps throughput) — not image weight.
+Shrinking that further would mean revisiting `inlineStylesheets: "always"`
+in `astro.config.mjs`, which was a deliberate, documented trade-off from an
+earlier stage for a different reason (avoiding a second render-blocking
+request on single-page WhatsApp-referral visits). Did not touch it this
+session since Task 1 was scoped to image delivery only — flagging as a
+**TODO** for a follow-up if 2.5s is a hard requirement rather than a
+target.
+
+**Accessibility regression caught and fixed:** the Lighthouse run surfaced
+a `color-contrast` failure on the new "Built by Sartoria Systems" footer
+credit added earlier this session (0.5 alpha white on `--color-forest`
+measured 3.86:1, below AA's 4.5:1 for that text size). Raised to 0.72 alpha;
+`color-contrast` audit now passes (binary score 1) sitewide.
 
 ## 1. What changed this session
 

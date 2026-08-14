@@ -1,0 +1,29 @@
+---
+/**
+ * Preloads the exact WebP variants the hero's <Picture> will pick, so the
+ * browser doesn't discover the image only after parsing the body (or worse,
+ * download twice because the preload didn't match the srcset). Width, format
+ * and quality here MUST stay identical to the <Picture> props in Hero.astro —
+ * they are imported from there rather than duplicated as literals so the two
+ * can't drift apart.
+ */
+import { getImage } from "astro:assets";
+import { HERO_WIDTHS, HERO_SIZES } from "../sections/Hero.astro";
+import { HERO_IMAGE } from "../../data/media";
+
+const variants = await Promise.all(
+  HERO_WIDTHS.map(async (width) => {
+    const img = await getImage({ src: HERO_IMAGE, width, format: "webp", quality: 50 });
+    return `${img.src} ${width}w`;
+  }),
+);
+const imagesrcset = variants.join(", ");
+---
+
+<link
+  rel="preload"
+  as="image"
+  imagesrcset={imagesrcset}
+  imagesizes={HERO_SIZES}
+  fetchpriority="high"
+/>

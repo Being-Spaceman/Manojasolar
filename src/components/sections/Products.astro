@@ -5,9 +5,11 @@
  * the four items below (panels, inverters, cables, accessories) are the
  * full catalogue, in the fixed order the photos array below matches.
  */
+import { Picture } from "astro:assets";
 import { useTranslations, useList } from "../../i18n/ui";
 import { localePath, type Locale } from "../../i18n/config";
 import { whatsappLink } from "../../data/business";
+import { PRODUCT_IMAGES } from "../../data/media";
 
 interface Props {
   locale: Locale;
@@ -20,13 +22,19 @@ const list = useList(locale);
 const items = list<{ title: string; body: string }>("products.items");
 const crossLang = locale === "mr" ? "en" : "mr";
 
-// Stand-in stock photos (free-to-use, Pexels license), one per item above, in order.
+// Same order as the four cards below: panels, inverters, cables, accessories.
 const photos = [
-  { src: "/images/product-panels.jpg", w: 1000, h: 668 },
-  { src: "/images/product-inverters.jpg", w: 1000, h: 1437 },
-  { src: "/images/product-cables.jpg", w: 1000, h: 668 },
-  { src: "/images/product-accessories.jpg", w: 1000, h: 1497 },
+  PRODUCT_IMAGES.panels,
+  PRODUCT_IMAGES.inverters,
+  PRODUCT_IMAGES.cables,
+  PRODUCT_IMAGES.accessories,
 ];
+
+// One card is ~248px wide on desktop (4-col grid inside the 1120px container,
+// minus its padding and gaps); below the 1024px breakpoint it's a single
+// column at roughly full viewport width minus the 32px page gutter.
+const PRODUCT_WIDTHS = [320, 480, 640];
+const PRODUCT_SIZES = "(min-width: 64rem) 248px, calc(100vw - 32px)";
 
 function waMessageFor(title: string): string {
   return locale === "mr"
@@ -46,12 +54,16 @@ function waMessageFor(title: string): string {
       {
         items.map((item, i) => (
           <li class="card">
-            <img
+            <Picture
               class="photo"
-              src={photos[i].src}
+              src={photos[i]}
               alt={item.title}
-              width={photos[i].w}
-              height={photos[i].h}
+              width={640}
+              widths={PRODUCT_WIDTHS}
+              sizes={PRODUCT_SIZES}
+              formats={["webp"]}
+              fallbackFormat="jpg"
+              quality={48}
               loading="lazy"
               decoding="async"
             />
@@ -128,6 +140,12 @@ function waMessageFor(title: string): string {
     flex-direction: column;
     gap: 8px;
     padding: 18px;
+  }
+
+  /* Same reason as Hero.astro: Picture wraps the <img class="photo"> in a
+     <picture>, which must not become its own flex item in the card. */
+  .card > picture {
+    display: contents;
   }
 
   .photo {
