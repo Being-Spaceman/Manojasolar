@@ -337,8 +337,20 @@ const waMessage =
       padding-bottom: 24px;
     }
     .card {
-      max-width: 460px;
-      padding: 22px 28px;
+      /* Centred under the centred headline, not bottom-left — the two read as
+         one stacked composition rather than two unrelated blocks. */
+      margin-inline: auto;
+      max-width: 620px;
+      padding: 26px 32px;
+    }
+    /* The card's type is set for a narrow mobile column; at desktop it sits
+       under a 7rem headline and needs to scale up with it or it reads as an
+       afterthought. */
+    .stat-value {
+      font-size: 1.75rem;
+    }
+    .stat-label {
+      font-size: 12.5px;
     }
   }
 </style>
