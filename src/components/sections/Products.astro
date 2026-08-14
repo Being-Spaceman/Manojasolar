@@ -6,7 +6,7 @@
  * full catalogue, in the fixed order the photos array below matches.
  */
 import { useTranslations, useList } from "../../i18n/ui";
-import { type Locale } from "../../i18n/config";
+import { localePath, type Locale } from "../../i18n/config";
 import { whatsappLink } from "../../data/business";
 
 interface Props {
@@ -70,6 +70,10 @@ function waMessageFor(title: string): string {
         ))
       }
     </ul>
+
+    <a class="see-full" href={localePath("/products", locale)} data-cta="products-see-full">
+      {t("products.seeFull")} →
+    </a>
   </div>
 </section>
 
@@ -159,7 +163,21 @@ function waMessageFor(title: string): string {
     text-align: center;
   }
 
+  .see-full {
+    color: var(--color-forest);
+    display: inline-block;
+    font-size: var(--text-body);
+    font-weight: 700;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
   @media (min-width: 64rem) {
+    .see-full {
+      text-align: start;
+      width: auto;
+    }
     .products {
       padding-block: 64px;
     }

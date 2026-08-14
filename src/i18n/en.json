@@ -24,6 +24,10 @@
       "title": "Terms of use | Manoja Agencies",
       "description": "Terms of use for the Manoja Agencies website, Latur."
     },
+    "products": {
+      "title": "Full Product Catalogue — Panels, Inverters, Cables, Accessories | Manoja Agencies",
+      "description": "Every Waaree panel, inverter, cable and accessory family Manoja Agencies stocks in Latur, with wattage, capacity and size options. No prices — quoted on WhatsApp."
+    },
     "notFound": {
       "title": "Page not found | Manoja Agencies",
       "description": "That page does not exist. Return to the Manoja Agencies home page."
@@ -108,7 +112,18 @@
         "body": "Connectors, earthing and the rest of the balance-of-system list."
       }
     ],
-    "cta": "Ask on WhatsApp"
+    "cta": "Ask on WhatsApp",
+    "seeFull": "See full product range"
+  },
+
+  "productsPage": {
+    "kicker": "Full catalogue",
+    "headline": "Everything we stock, in detail.",
+    "cross": "आम्ही ठेवत असलेल्या प्रत्येक वारी उत्पादनाची संपूर्ण यादी.",
+    "note": "All products are Waaree. No prices listed — every family is quoted on WhatsApp against what's in stock that day.",
+    "inverterNote": "Single-phase 3.3–6 kW for residential systems, three-phase 5–100 kW for commercial and industrial.",
+    "cta": "Ask on WhatsApp",
+    "backLabel": "Back to home"
   },
 
   "dcr": {
