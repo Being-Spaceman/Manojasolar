@@ -51,8 +51,15 @@
      "No gradients, no tints, no screens." Every pair below clears 4.5:1.    */
   --color-green: #007b3c; /* brand field, secondary stroke — 60% of any surface */
   --color-forest: #04492a; /* headings, dark bands — 9.7:1 on white */
-  --color-ink: #14171a; /* body text, phone numbers — 17:1 on white */
-  --color-red: #e1261c; /* CTA ONLY. See the rule below. */
+  --color-ink: #0b1f17; /* body text, dark section background — 17:1+ on white */
+  --color-green-soft: #e7f2eb; /* tint background — Process section */
+  --color-amber: #f5a623; /* CTA ONLY. See the rule below. Red is retired. */
+  --color-amber-dark: #c97f0a; /* CTA hover/pressed */
+  --color-sand: #faf7f0; /* warm paper — alternate section background */
+  --color-white: #ffffff;
+  /* Validation error only — never a CTA. Kept distinct from the retired
+     brand-red so it can never be reached for by accident on a button. */
+  --color-error: #c62828;
 
   /* --- working surfaces and greys --------------------------------------- */
   --color-bg: #f5faf7; /* page background — a hair off white, green-tinted */
@@ -235,11 +242,13 @@
    =========================================================================== */
 
 @layer components {
-  /* The one red button. Never two in the same view. */
+  /* The one amber button. Never two in the same view. Dark ink text — white on
+     amber fails contrast, and ink reads legibly on amber whether the section
+     behind it is dark or light. */
   .btn-primary {
     align-items: center;
-    background: var(--color-red);
-    color: #fff;
+    background: var(--color-amber);
+    color: var(--color-ink);
     display: flex;
     font-size: var(--text-cta);
     font-weight: 800;

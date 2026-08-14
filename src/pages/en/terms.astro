@@ -1,0 +1,76 @@
+---
+import SimplePage from "../../components/SimplePage.astro";
+import { useTranslations } from "../../i18n/ui";
+import { BUSINESS } from "../../data/business";
+
+const t = useTranslations("en");
+---
+
+{/*
+  TODO(MNJ): basic terms of use, not legal advice and not reviewed by a
+  lawyer. Have the owner get this checked before launch, alongside the
+  privacy policy, against India's DPDP Act 2023.
+*/}
+<SimplePage
+  locale="en"
+  title={t("meta.terms.title")}
+  description={t("meta.terms.description")}
+  path="/terms"
+  headline="Terms of use"
+  homeLabel={t("notFound.home")}
+>
+  <p>
+    This website belongs to {BUSINESS.legalName} ({BUSINESS.nameDevanagari}),
+    an authorised Waaree Energies channel partner based in Latur, Maharashtra.
+    By using this site you agree to these terms.
+  </p>
+
+  <h2>What this site is</h2>
+  <p>
+    This site describes the products we stock and supply, and lets dealers,
+    resellers, installers and homeowners send us an enquiry. It is not an
+    online shop — nothing can be purchased directly through it, no prices
+    are published, and no order is placed by submitting the enquiry form.
+  </p>
+
+  <h2>No prices, no stock guarantee</h2>
+  <p>
+    Any figures, specifications or availability mentioned on this site are
+    indicative and can change without notice. Final pricing, quantities and
+    availability are confirmed only on a call or WhatsApp conversation with
+    our team, and only a written or verbal confirmation from us — not
+    anything on this website — is binding.
+  </p>
+
+  <h2>Products</h2>
+  <p>
+    All products referenced on this site are genuine Waaree Energies
+    products, supplied under our authorised channel partner agreement, and
+    carry the manufacturer's standard warranty terms. Warranty claims are
+    handled by Waaree directly; see our{" "}
+    <a href="/privacy">privacy policy</a> for how we handle your enquiry
+    details.
+  </p>
+
+  <h2>Accuracy</h2>
+  <p>
+    We try to keep this site accurate, but errors and omissions are
+    possible. If something you were told on a call differs from what is
+    written here, what our team told you directly takes priority.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    {BUSINESS.legalName}, {BUSINESS.address.street}, {BUSINESS.address.locality},
+    {BUSINESS.address.region} {BUSINESS.address.postalCode}. Phone{" "}
+    {BUSINESS.phoneDisplay}.
+  </p>
+
+  <p>
+    <em>
+      Note: these terms are a basic, accurate description of how this site
+      works, but they are not legal advice and have not been reviewed by a
+      lawyer. They need that review before launch.
+    </em>
+  </p>
+</SimplePage>

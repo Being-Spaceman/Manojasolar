@@ -1,9 +1,7 @@
+# TODO(MNJ): this blocks the whole site from being indexed. Remove this block
+# (revert to "Allow: /" with the /thank-you disallow rules) once the owner has
+# reviewed the live site and approved it for launch.
 User-agent: *
-Allow: /
-
-# Thank-you and 404 also carry <meta name="robots" content="noindex">; this is belt
-# and braces so a thank-you URL never turns up as a search result.
-Disallow: /thank-you
-Disallow: /en/thank-you
+Disallow: /
 
 Sitemap: https://manojaagencies.in/sitemap-index.xml

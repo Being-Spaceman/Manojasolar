@@ -20,6 +20,10 @@
       "title": "Privacy policy | Manoja Agencies",
       "description": "How Manoja Agencies, Latur handles the details you share through this website."
     },
+    "terms": {
+      "title": "Terms of use | Manoja Agencies",
+      "description": "Terms of use for the Manoja Agencies website, Latur."
+    },
     "notFound": {
       "title": "Page not found | Manoja Agencies",
       "description": "That page does not exist. Return to the Manoja Agencies home page."
@@ -300,8 +304,10 @@
     "hoursLabel": "Business hours",
     "gstLabel": "GST number",
     "privacy": "Privacy policy",
+    "terms": "Terms of use",
     "copyright": "© {year} Manoja Agencies, Latur.",
-    "builtNote": "Authorised Waaree stock — panels, inverters, cables and accessories — supplied to dealers, resellers and installers in Latur."
+    "builtNote": "Authorised Waaree stock — panels, inverters, cables and accessories — supplied to dealers, resellers and installers in Latur.",
+    "builtBy": "Built by"
   },
 
   "thankYou": {

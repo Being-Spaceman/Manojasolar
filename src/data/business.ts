@@ -16,19 +16,15 @@ export const BUSINESS = {
   nameDevanagari: "मनोजा एजन्सी",
 
   // --- contact -------------------------------------------------------------
-  // TODO(MNJ): real landline number — NOT REAL, obviously-fake placeholder so this
-  // can never ship by accident.
-  phoneDisplay: "TODO-PHONE-NOT-SET",
-  phoneE164: "+910000000000",
+  phoneDisplay: "8793716228",
+  phoneE164: "+918793716228",
 
-  // TODO(MNJ): real WhatsApp mobile. WhatsApp will not open on a landline —
-  // this must be a 10-digit mobile. Format: 91XXXXXXXXXX, no +, no spaces.
-  // NOT REAL — obviously-fake placeholder so this can never ship by accident.
-  whatsappE164: "910000000000",
+  // Same number used for WhatsApp as for calls.
+  whatsappE164: "918793716228",
 
-  // TODO(MNJ): real email, or delete the field and the footer row that uses it.
-  // NOT REAL — obviously-fake placeholder so this can never ship by accident.
-  email: "TODO-EMAIL-NOT-SET@example.invalid",
+  // TODO(MNJ): temporary Gmail address — replace with a domain mailbox
+  // (e.g. info@manojaagencies.in) once one exists.
+  email: "manojaagencies.solar@gmail.com",
 
   // --- address -------------------------------------------------------------
   // TODO(MNJ): add the shop/unit number if there is one — the building holds
@@ -62,7 +58,10 @@ export const BUSINESS = {
 
   // --- hours ---------------------------------------------------------------
   hours: {
-    display: { mr: "सोम — शनि · सकाळी १० ते रात्री ९", en: "Mon–Sat · 10am – 9pm" },
+    display: {
+      mr: "सोम — शनि · सकाळी १० ते रात्री ९ · रविवार बंद",
+      en: "Mon–Sat · 10am – 9pm · Closed Sunday",
+    },
     /** schema.org openingHours format, used by the JSON-LD. */
     schema: ["Mo-Sa 10:00-21:00"],
   },
@@ -71,6 +70,16 @@ export const BUSINESS = {
   // TODO(MNJ): add real profile URLs, or leave empty — an empty array is fine and
   // is better than a `sameAs` pointing at a page that does not exist.
   sameAs: [] as string[],
+
+  // --- optional platform links ----------------------------------------------
+  // TODO(MNJ): fill in as accounts/listings are created. Components must render
+  // nothing for any field left as "".
+  instagram: "",
+  facebook: "",
+  youtube: "",
+  gbpUrl: "",
+  justdial: "",
+  indiamart: "",
 
   /**
    * Service area for the JSON-LD. Waaree does not permit a channel partner to
@@ -105,4 +114,9 @@ export function hasRealPhone(): boolean {
 
 export function hasRealEmail(): boolean {
   return !BUSINESS.email.startsWith("TODO-EMAIL-NOT-SET");
+}
+
+/** Render nothing for any of the optional platform links left unset. */
+export function hasLink(value: string): boolean {
+  return value.trim().length > 0;
 }

@@ -65,7 +65,16 @@ const year = new Date().getFullYear();
     <div class="base">
       <span>{t("footer.copyright", { year })}</span>
       <a href={localePath("/privacy", locale)} class="link">{t("footer.privacy")}</a>
+      <a href={localePath("/terms", locale)} class="link">{t("footer.terms")}</a>
+      <a href={`${localePath("/", locale)}#faq`} class="link">{t("nav.faq")}</a>
     </div>
+
+    <p class="credit">
+      {t("footer.builtBy")}{" "}
+      <a href="https://sartoria.systems" target="_blank" rel="noopener" class="link">
+        Sartoria Systems
+      </a>
+    </p>
   </div>
 </footer>
 
@@ -191,6 +200,12 @@ const year = new Date().getFullYear();
   }
   .link:hover {
     box-shadow: inset 0 -1px 0 0 #fff;
+  }
+
+  .credit {
+    color: rgb(255 255 255 / 0.5);
+    font-size: var(--text-small);
+    padding-top: 4px;
   }
 
   @media (min-width: 64rem) {

@@ -504,11 +504,11 @@ const errors = {
      and it never appears at the same time as an idle CTA in the same field group. */
   input[aria-invalid="true"],
   select[aria-invalid="true"] {
-    border-color: var(--color-red);
+    border-color: var(--color-error);
   }
 
   .err {
-    color: var(--color-red);
+    color: var(--color-error);
     font-size: var(--text-small);
     font-weight: 600;
     line-height: 1.45;
@@ -528,10 +528,10 @@ const errors = {
 
   .submit {
     align-items: center;
-    background: var(--color-red);
+    background: var(--color-amber);
     border: 0;
     border-radius: 0;
-    color: #fff;
+    color: var(--color-ink);
     cursor: pointer;
     display: flex;
     font-family: inherit;

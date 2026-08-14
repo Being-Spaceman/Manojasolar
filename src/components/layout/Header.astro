@@ -20,16 +20,16 @@ const t = useTranslations(locale);
 */
 const onHomeSolar = path === "/home-solar" || path.startsWith("/home-solar/");
 
+// Cut to four items — "Why us" reads in page flow with no nav entry, and
+// "Questions" moved to a footer link. Home solar is rendered separately
+// below so it reads as a distinct, secondary link rather than a nav peer.
 const nav = onHomeSolar
   ? [{ key: "homeSolar.backToTrade", href: localePath("/", locale) }]
   : [
       { key: "nav.stock", href: "#stock" },
       { key: "nav.products", href: "#products" },
-      { key: "nav.why", href: "#why" },
       { key: "nav.process", href: "#process" },
-      { key: "nav.faq", href: "#faq" },
       { key: "nav.contact", href: "#contact" },
-      { key: "nav.homeSolar", href: localePath("/home-solar", locale) },
     ];
 ---
 
@@ -53,6 +53,11 @@ const nav = onHomeSolar
 
     <nav class="nav" aria-label={t("nav.menuOpen")}>
       {nav.map((item) => <a href={item.href}>{t(item.key)}</a>)}
+      {!onHomeSolar && (
+        <a href={localePath("/home-solar", locale)} class="nav-home-solar">
+          {t("nav.homeSolar")}
+        </a>
+      )}
     </nav>
 
     <LangToggle locale={locale} path={path} tone="light" />
@@ -175,6 +180,15 @@ const nav = onHomeSolar
     .nav a:hover {
       color: #fff;
       box-shadow: inset 0 -2px 0 0 #fff;
+    }
+    /* Home solar addresses a different audience — set apart from the trade
+       nav items rather than reading as a peer of Stock/Products/etc. */
+    .nav-home-solar {
+      border-left: 1px solid rgb(255 255 255 / 0.3);
+      color: rgb(255 255 255 / 0.75) !important;
+      font-style: italic;
+      margin-inline-start: 4px;
+      padding-inline-start: 20px !important;
     }
   }
 </style>
