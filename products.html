@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="mr" data-lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>उत्पादने | Products — Manoja Agencies</title>
+<meta name="description" content="Waaree सोलर पॅनेल, इन्व्हर्टर, केबल्स आणि ॲक्सेसरीज — मनोजा एजन्सी, लातूर.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .cat-block { margin-bottom: 56px; scroll-margin-top: 100px; }
+  .cat-head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .cat-image { width: 64px; height: 64px; border-radius: 10px; flex-shrink: 0; }
+  .cat-block h3 { font-size: 1.3rem; font-weight: 700; color: var(--green-dark); }
+  .variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .variant-block {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; font-size: 0.9rem; font-weight: 500;
+  }
+  .variant-placeholder {
+    width: 100%; aspect-ratio: 4/3; background: var(--bg-alt);
+    display: flex; align-items: center; justify-content: center;
+    color: #b7c9bc;
+  }
+  .variant-image {
+    width: 100%; aspect-ratio: 4/3; background: var(--bg-alt);
+    object-fit: contain; padding: 10px; display: block;
+  }
+  .variant-placeholder::before {
+    content: '';
+    width: 34px; height: 34px;
+    background: currentColor;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>') center/contain no-repeat;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>') center/contain no-repeat;
+  }
+  .variant-label { display: block; padding: 14px 16px 4px; }
+  .variant-spec { display: block; padding: 0 16px 14px; font-size: 0.78rem; font-weight: 400; color: var(--text-muted, #6b7c72); }
+  .cat-section-image {
+    width: 100%; max-height: 220px; object-fit: contain; background: var(--bg-alt);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 20px;
+  }
+  .variant-scroll {
+    display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+  }
+  .variant-scroll .variant-block { flex: 0 0 200px; scroll-snap-align: start; }
+  .inverter-features {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px;
+  }
+  .inverter-features span {
+    background: var(--green-light); color: var(--green-dark);
+    font-size: 0.82rem; font-weight: 600; padding: 7px 14px; border-radius: 999px;
+  }
+  .variant-block { cursor: pointer; transition: box-shadow .15s, transform .15s; }
+  .variant-block:hover { box-shadow: 0 4px 16px rgba(15,60,30,.1); transform: translateY(-2px); }
+
+  .cat-section-photo { position: relative; margin-bottom: 20px; border-radius: var(--radius); overflow: hidden; background: var(--bg-alt); }
+  .cat-section-photo .cat-section-image { margin-bottom: 0; }
+  .cat-section-badge {
+    position: absolute; top: 16px; left: 20px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,.95); padding: 6px 20px 6px 6px; border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(15,60,30,.14);
+  }
+  .cat-section-badge img { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; }
+  .cat-section-badge span { font-size: 1.1rem; font-weight: 700; color: var(--green-dark); }
+  .cat-head--visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; margin: -1px;
+  }
+
+  .product-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(13, 35, 64, .55);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .product-modal-overlay.open { display: flex; }
+  .product-modal {
+    background: #fff; border-radius: var(--radius);
+    max-width: 780px; width: 100%; max-height: 88vh;
+    display: flex; overflow: hidden; position: relative;
+    box-shadow: 0 20px 60px rgba(13,35,64,.3);
+  }
+  .product-modal-close {
+    position: absolute; top: 12px; right: 12px; z-index: 2;
+    width: 36px; height: 36px; border-radius: 50%; border: none;
+    background: #fff; box-shadow: 0 2px 8px rgba(13,35,64,.2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text-dark);
+  }
+  .product-modal-close:hover { background: var(--green-light); color: var(--green-dark); }
+  .product-modal-info {
+    flex: 1 1 45%; padding: 40px 32px; display: flex; flex-direction: column;
+    gap: 14px; justify-content: center; overflow-y: auto;
+  }
+  .product-modal-eyebrow {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--green-dark);
+  }
+  .product-modal-title { font-size: 1.5rem; font-weight: 700; color: var(--heading); }
+  .product-modal-spec { font-size: 0.95rem; color: var(--text-muted); }
+  .product-modal-cta { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .product-modal-photo {
+    flex: 1 1 55%; background: var(--bg-alt);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .product-modal-photo img { max-width: 100%; max-height: 60vh; object-fit: contain; }
+  .product-modal-photo .variant-placeholder { width: 140px; height: 140px; color: #b7c9bc; }
+  @media (max-width: 640px) {
+    .product-modal { flex-direction: column; max-height: 92vh; }
+    .product-modal-photo { padding: 20px; }
+    .product-modal-info { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-strip"></div>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <span class="devanagari">मनोजा एजन्सी</span>
+      Manoja Agencies
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html"><span class="mr">मुख्यपृष्ठ</span><span class="en">Home</span></a></li>
+        <li class="nav-item">
+          <a href="products.html" class="active">
+            <span class="mr">उत्पादने</span><span class="en">Products</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+          <div class="nav-dropdown">
+            <a href="products.html#panels"><span class="mr">सोलर पॅनेल</span><span class="en">Solar Panels</span></a>
+            <a href="products.html#inverters"><span class="mr">इन्व्हर्टर</span><span class="en">Inverters</span></a>
+            <a href="products.html#cables"><span class="mr">केबल्स</span><span class="en">Cables</span></a>
+            <a href="products.html#accessories"><span class="mr">ॲक्सेसरीज</span><span class="en">Accessories</span></a>
+          </div>
+        </li>
+        <li><a href="contact.html"><span class="mr">संपर्क</span><span class="en">Contact</span></a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-toggle">
+        <button type="button" data-lang="mr">मराठी</button>
+        <button type="button" data-lang="en">English</button>
+      </div>
+      <a class="icon-btn nav-cta" target="_blank" rel="noopener" aria-label="Call"
+         href="tel:+918793716228">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+      <a class="btn btn-primary btn-sm nav-cta" target="_blank" rel="noopener"
+         href="https://wa.me/918793716228?text=Namaskar%2C%20mala%20Waaree%20solar%20productbaddal%20mahiti%20have%20aahe.">
+        <span class="mr">WhatsApp करा</span><span class="en">WhatsApp Us</span>
+      </a>
+      <button class="mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2><span class="mr">उत्पादने</span><span class="en">Products</span></h2>
+      <p><span class="mr">किंमत आणि उपलब्धतेसाठी WhatsApp किंवा कॉल करा</span><span class="en">For pricing and availability, WhatsApp or call us</span></p>
+    </div>
+
+    <div class="cat-block" id="panels">
+      <div class="cat-head">
+        <img src="assets/panel.svg" alt="Solar Panels" class="cat-image">
+        <h3><span class="mr">सोलर पॅनेल</span><span class="en">Panels</span></h3>
+      </div>
+      <div class="variant-grid">
+        <div class="variant-block"><img class="variant-image" src="assets/products/panel-dcr-bifacial-500-550w.webp" alt="DCR Bi-facial 500-550W solar panel"><span class="variant-label">DCR Bi-facial 500–550W</span><span class="variant-spec">12yr product / 30yr performance warranty</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/panel-topcon-bifacial-dcr-555-590w.webp" alt="TOPCon Bi-facial DCR 555-590W solar panel"><span class="variant-label">TOPCon Bi-facial DCR 555–590W</span><span class="variant-spec">12yr product / 30yr performance warranty</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/panel-topcon-non-dcr-585-615w.webp" alt="Non-DCR TOPCon 585-615W solar panel"><span class="variant-label">Non-DCR TOPCon 585–615W</span><span class="variant-spec">12yr product / 30yr performance warranty</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/panel-mono-perc-non-dcr-545w.webp" alt="Non-DCR Mono-PERC 545W solar panel"><span class="variant-label">Non-DCR Mono-PERC 545W</span><span class="variant-spec">Crack-tolerant MBB module, increased shade tolerance</span></div>
+      </div>
+    </div>
+
+    <div class="cat-block" id="inverters">
+      <div class="cat-head cat-head--visually-hidden">
+        <img src="assets/inverter.svg" alt="Inverters" class="cat-image">
+        <h3><span class="mr">इन्व्हर्टर</span><span class="en">Inverters</span></h3>
+      </div>
+      <div class="cat-section-photo">
+        <img class="cat-section-image" src="assets/products/inverter-lineup.png" alt="Waaree on-grid inverter range, single and three phase">
+        <span class="cat-section-badge">
+          <img src="assets/inverter.svg" alt="">
+          <span><span class="mr">इन्व्हर्टर</span><span class="en">Inverters</span></span>
+        </span>
+      </div>
+      <div class="variant-grid variant-scroll">
+        <div class="variant-block"><img class="variant-image" src="assets/products/inverter-generic.webp" alt="Waaree single phase on-grid inverter"><span class="variant-label">Single Phase 1 kW – 3.3 kW</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/inverter-generic.webp" alt="Waaree single phase on-grid inverter"><span class="variant-label">Single Phase 3 kW – 6 kW</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/inverter-generic.webp" alt="Waaree three phase on-grid inverter"><span class="variant-label">Three Phase 3 kW – 25 kW</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/inverter-generic.webp" alt="Waaree three phase on-grid inverter"><span class="variant-label">Three Phase 30 kW – 75 kW</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/inverter-generic.webp" alt="Waaree three phase on-grid inverter"><span class="variant-label">Three Phase 75 kW – 136 kW</span></div>
+        <div class="variant-block"><img class="variant-image" src="assets/products/inverter-generic.webp" alt="Waaree three phase on-grid inverter"><span class="variant-label">Three Phase 350 kW</span></div>
+      </div>
+      <div class="inverter-features">
+        <span><span class="mr">८ वर्षे वॉरंटी</span><span class="en">8 Years Warranty</span></span>
+        <span><span class="mr">IP65 / IP66 संरक्षण</span><span class="en">IP65 / IP66 Protection</span></span>
+        <span><span class="mr">९९% पर्यंत MPPT कार्यक्षमता</span><span class="en">Up to 99% MPPT Efficiency</span></span>
+        <span><span class="mr">भारतात उत्पादित</span><span class="en">Manufactured in India</span></span>
+        <span><span class="mr">लोकल डेटा होस्टिंग</span><span class="en">Local Data Hosting (India)</span></span>
+        <span><span class="mr">रिअल-टाइम मॉनिटरिंग ॲप</span><span class="en">Real-Time Monitoring App</span></span>
+      </div>
+    </div>
+
+    <div class="cat-block" id="cables">
+      <div class="cat-head">
+        <img src="assets/cable.svg" alt="Cables" class="cat-image">
+        <h3><span class="mr">केबल्स</span><span class="en">Cables</span></h3>
+      </div>
+      <div class="variant-grid">
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DC Cable (WaaCab, Polycab) 2.5 sq.mm</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DC Cable (WaaCab, Polycab) 4 sq.mm</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DC Cable (WaaCab, Polycab) 6 sq.mm</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">LA Copper Cable 16 sq.mm</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Earthing Cable 6 sq.mm</span></div>
+      </div>
+    </div>
+
+    <div class="cat-block" id="accessories">
+      <div class="cat-head">
+        <img src="assets/accessory.svg" alt="Accessories" class="cat-image">
+        <h3><span class="mr">ॲक्सेसरीज</span><span class="en">Accessories</span></h3>
+      </div>
+      <div class="variant-grid">
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">AC DB (230V / 440V)</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DCDB 1-in-1-out (600V / 1000V)</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DCDB 2-in-2-out (600V / 1000V)</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Earthing Kits</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Pit Cover</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Chemical Bag</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Generation Meter</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">MC4 Connectors</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Cable Ties</span></div>
+        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Cable Tray 45×45mm</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="cta-block">
+      <h2><span class="mr">चौकशीसाठी संपर्क करा</span><span class="en">Get in Touch</span></h2>
+      <div class="hero-cta">
+        <a class="btn btn-primary" target="_blank" rel="noopener"
+           href="https://wa.me/918793716228?text=Namaskar%2C%20mala%20Waaree%20solar%20productbaddal%20mahiti%20have%20aahe.">
+          <span class="mr">WhatsApp करा</span><span class="en">WhatsApp</span>
+        </a>
+        <a class="btn btn-outline" href="tel:+918793716228">
+          <span class="mr">कॉल करा</span><span class="en">Call Now</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="devanagari">मनोजा एजन्सी</span>
+          Manoja Agencies
+        </a>
+        <p><span class="mr"><span class="latin">Waaree Energies</span> चे अधिकृत डीलर, लातूर.</span><span class="en">Authorised dealer of Waaree Energies, Latur.</span></p>
+      </div>
+      <div class="footer-col">
+        <h4><span class="mr">पेजेस</span><span class="en">Pages</span></h4>
+        <ul>
+          <li><a href="index.html"><span class="mr">मुख्यपृष्ठ</span><span class="en">Home</span></a></li>
+          <li><a href="products.html"><span class="mr">उत्पादने</span><span class="en">Products</span></a></li>
+          <li><a href="contact.html"><span class="mr">संपर्क</span><span class="en">Contact</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4><span class="mr">संपर्क</span><span class="en">Contact</span></h4>
+        <ul>
+          <li>+91 87937 16228</li>
+          <li>contact@manojasolar.in</li>
+          <li><span class="mr">सोम–शनि, सकाळी १० – रात्री ९</span><span class="en">Mon–Sat, 10 AM – 9 PM</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Manoja Agencies. <span class="mr">सर्व हक्क राखीव.</span><span class="en">All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp"
+   href="https://wa.me/918793716228?text=Namaskar%2C%20mala%20Waaree%20solar%20productbaddal%20mahiti%20have%20aahe.">
+  <svg viewBox="0 0 32 32" fill="white"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.34.67 4.523 1.828 6.37L4 29l7.816-1.8A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.6c-1.99 0-3.84-.58-5.4-1.58l-.387-.24-4.64 1.07 1.09-4.52-.253-.4A9.55 9.55 0 0 1 6.4 15c0-5.303 4.298-9.6 9.601-9.6 5.302 0 9.6 4.297 9.6 9.6 0 5.302-4.298 9.6-9.6 9.6zm5.27-7.19c-.29-.145-1.71-.845-1.976-.94-.265-.097-.458-.145-.65.145-.193.29-.747.94-.916 1.133-.169.193-.338.217-.628.072-.29-.145-1.224-.451-2.332-1.437-.862-.768-1.444-1.717-1.613-2.007-.169-.29-.018-.447.127-.591.13-.13.29-.338.435-.507.145-.169.193-.29.29-.483.097-.193.048-.362-.024-.507-.072-.145-.65-1.566-.89-2.145-.235-.564-.473-.487-.65-.497-.169-.008-.362-.01-.554-.01-.193 0-.507.072-.772.362-.265.29-1.012.99-1.012 2.41 0 1.42 1.036 2.793 1.18 2.986.145.193 2.04 3.115 4.945 4.368.691.298 1.23.476 1.65.61.693.22 1.324.19 1.823.115.556-.083 1.71-.699 1.951-1.373.242-.674.242-1.252.169-1.373-.072-.121-.265-.193-.555-.338z"/></svg>
+</a>
+
+<div class="product-modal-overlay" id="productModal">
+  <div class="product-modal">
+    <button type="button" class="product-modal-close" id="productModalClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="product-modal-info">
+      <span class="product-modal-eyebrow" id="productModalCat"></span>
+      <h3 class="product-modal-title" id="productModalTitle"></h3>
+      <p class="product-modal-spec" id="productModalSpec"></p>
+      <div class="product-modal-cta">
+        <a class="btn btn-primary btn-sm" target="_blank" rel="noopener"
+           href="https://wa.me/918793716228?text=Namaskar%2C%20mala%20Waaree%20solar%20productbaddal%20mahiti%20have%20aahe.">
+          <span class="mr">WhatsApp करा</span><span class="en">WhatsApp</span>
+        </a>
+        <a class="btn btn-outline btn-sm" href="tel:+918793716228">
+          <span class="mr">कॉल करा</span><span class="en">Call Now</span>
+        </a>
+      </div>
+    </div>
+    <div class="product-modal-photo" id="productModalPhoto"></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
