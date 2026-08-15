@@ -15,7 +15,7 @@ const { locale, withFaq = false, faqKey = "faq" } = Astro.props;
 const t = useTranslations(locale);
 const list = useList(locale);
 
-const site = Astro.site ?? new URL("https://manojaagencies.in");
+const site = Astro.site ?? new URL("https://manojasolar.in");
 const homeUrl = new URL(localePath("/", locale), site).href;
 const id = `${new URL("/", site).href}#business`;
 

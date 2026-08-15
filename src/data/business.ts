@@ -23,7 +23,7 @@ export const BUSINESS = {
   whatsappE164: "918793716228",
 
   // TODO(MNJ): temporary Gmail address — replace with a domain mailbox
-  // (e.g. info@manojaagencies.in) once one exists.
+  // (e.g. info@manojasolar.in) once one exists.
   email: "manojaagencies.solar@gmail.com",
 
   // --- address -------------------------------------------------------------

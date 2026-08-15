@@ -5,7 +5,7 @@
  * broken snippet or starts sending junk events by accident.
  *
  * TODO(MNJ): replace with the real GA4 Measurement ID (format `G-XXXXXXXXXX`)
- * once a GA4 property exists for manojaagencies.in.
+ * once a GA4 property exists for manojasolar.in.
  */
 export const GA_MEASUREMENT_ID = "G-TODO-NOT-SET";
 

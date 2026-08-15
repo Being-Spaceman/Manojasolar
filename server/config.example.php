@@ -16,9 +16,9 @@ return [
 
     // --- mail ----------------------------------------------------------------
     // Digest recipient (server/cron/digest.php). Switch to a domain mailbox
-    // (e.g. sales@manojaagencies.in) once one exists.
+    // (e.g. sales@manojasolar.in) once one exists.
     'mail_to' => 'manojaagencies.solar@gmail.com',
-    'mail_from' => 'no-reply@manojaagencies.in',
+    'mail_from' => 'no-reply@manojasolar.in',
 
     // --- auth ------------------------------------------------------------
     // bcrypt hashes only — never a plaintext password.

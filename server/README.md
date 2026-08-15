@@ -187,8 +187,8 @@ If hPanel's cron UI asks for a full command instead of just a path, it's
 typically:
 
 ```
-php /home/<hosting-user>/domains/manojaagencies.in/public_html/cron/digest.php
-php /home/<hosting-user>/domains/manojaagencies.in/public_html/cron/monthly-archive.php
+php /home/<hosting-user>/domains/manojasolar.in/public_html/cron/digest.php
+php /home/<hosting-user>/domains/manojasolar.in/public_html/cron/monthly-archive.php
 ```
 
 (exact path depends on the account — hPanel's cron job screen shows the

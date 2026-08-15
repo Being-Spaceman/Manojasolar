@@ -14,7 +14,7 @@ interface Props {
 
 const { locale, title, description, path, noindex = false, image } = Astro.props;
 
-const site = Astro.site ?? new URL("https://manojaagencies.in");
+const site = Astro.site ?? new URL("https://manojasolar.in");
 const bare = stripLocale(path) || "/";
 const canonical = new URL(localePath(bare, locale), site).href;
 const ogImage = new URL(image ?? "/og-default.png", site).href;

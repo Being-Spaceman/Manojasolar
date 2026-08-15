@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
-const SITE = "https://manojaagencies.in";
+const SITE = "https://manojasolar.in";
 
 export default defineConfig({
   site: SITE,

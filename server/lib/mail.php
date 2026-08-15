@@ -12,7 +12,7 @@ require_once __DIR__ . '/db.php';
 
 function mnj_send_mail(string $to, string $subject, string $htmlBody): bool
 {
-    $from = mnj_config()['mail_from'] ?? 'no-reply@manojaagencies.in';
+    $from = mnj_config()['mail_from'] ?? 'no-reply@manojasolar.in';
     $headers = "MIME-Version: 1.0\r\n"
         . "Content-Type: text/html; charset=UTF-8\r\n"
         . "From: Manoja Agencies <{$from}>\r\n";

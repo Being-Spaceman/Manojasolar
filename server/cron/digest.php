@@ -100,7 +100,7 @@ $html = <<<HTML
           {$body}
           <tr>
             <td style="padding:16px 12px;font-size:12px;color:#55595d;border-top:1px solid #edebe4">
-              Full detail, filters and export: <a href="https://manojaagencies.in/leads/" style="color:#007b3c">manojaagencies.in/leads</a>
+              Full detail, filters and export: <a href="https://manojasolar.in/leads/" style="color:#007b3c">manojasolar.in/leads</a>
             </td>
           </tr>
         </table>

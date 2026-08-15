@@ -4,4 +4,4 @@
 User-agent: *
 Disallow: /
 
-Sitemap: https://manojaagencies.in/sitemap-index.xml
+Sitemap: https://manojasolar.in/sitemap-index.xml
