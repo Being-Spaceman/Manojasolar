@@ -32,9 +32,14 @@ body {
   font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
 }
 
+.latin {
+  font-weight: 700;
+  color: var(--green-dark);
+  letter-spacing: -.01em;
+}
+
 .mr .latin {
   font-family: 'Poppins', sans-serif;
-  font-weight: 700;
 }
 
 img { max-width: 100%; display: block; }
@@ -445,8 +450,8 @@ ul { list-style: none; }
 
 .showcase-photo {
   position: absolute;
-  width: 140px;
-  height: 140px;
+  width: 145px;
+  height: 145px;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 14px 34px rgba(10, 40, 20, 0.14);
@@ -477,6 +482,31 @@ ul { list-style: none; }
   .showcase-photo.pos-br { bottom: 10px; right: 60px; }
 }
 
+@keyframes photo-breathe {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.2); }
+  35%  { transform: scale(1.3); }
+  50%  { transform: scale(1.2); }
+  65%  { transform: scale(1.1); }
+  80%  { transform: scale(1); }
+  90%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@media (min-width: 860px) {
+  .showcase-photo {
+    animation: photo-breathe 7s ease-in-out infinite;
+  }
+  .showcase-photo.pos-tl { animation-delay: 0s; }
+  .showcase-photo.pos-tr { animation-delay: 1.75s; }
+  .showcase-photo.pos-bl { animation-delay: 3.5s; }
+  .showcase-photo.pos-br { animation-delay: 5.25s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-photo { animation: none; }
+}
+
 .showcase-content {
   position: relative;
   z-index: 2;
@@ -485,10 +515,11 @@ ul { list-style: none; }
 }
 
 .showcase-headline {
-  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--heading);
+  font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -.005em;
+  color: var(--text-dark);
   margin-bottom: 44px;
 }
 
@@ -511,8 +542,8 @@ ul { list-style: none; }
 }
 
 .showcase-icon-circle {
-  width: 56px;
-  height: 56px;
+  width: 79px;
+  height: 79px;
   border-radius: 50%;
   background: var(--green-light);
   color: var(--green-dark);
@@ -521,7 +552,7 @@ ul { list-style: none; }
   justify-content: center;
   transition: background .18s, color .18s, transform .18s;
 }
-.showcase-icon-circle svg { width: 24px; height: 24px; }
+.showcase-icon-circle svg { width: 37px; height: 37px; }
 
 .showcase-icon:hover .showcase-icon-circle {
   background: var(--green);
