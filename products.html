@@ -118,10 +118,18 @@
   .product-modal-cta { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
   .product-modal-photo {
     flex: 1 1 55%; background: var(--bg-alt);
-    display: flex; align-items: center; justify-content: center; padding: 24px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 14px;
   }
   .product-modal-photo img { max-width: 100%; max-height: 60vh; object-fit: contain; }
   .product-modal-photo .variant-placeholder { width: 140px; height: 140px; color: #b7c9bc; }
+  .product-modal-main-img { max-height: 50vh; }
+  .product-modal-thumbs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .product-modal-thumb {
+    width: 52px; height: 52px; object-fit: cover; border-radius: 8px; cursor: pointer;
+    border: 2px solid transparent; opacity: .7; transition: opacity .15s, border-color .15s;
+  }
+  .product-modal-thumb:hover { opacity: 1; }
+  .product-modal-thumb.active { opacity: 1; border-color: var(--green); }
   @media (max-width: 640px) {
     .product-modal { flex-direction: column; max-height: 92vh; }
     .product-modal-photo { padding: 20px; }
@@ -246,11 +254,11 @@
         </span>
       </div>
       <div class="variant-grid">
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DC Cable (WaaCab, Polycab) 2.5 sq.mm</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DC Cable (WaaCab, Polycab) 4 sq.mm</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DC Cable (WaaCab, Polycab) 6 sq.mm</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">LA Copper Cable 16 sq.mm</span></div>
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-earthing-kit.jpg" alt="Earthing rod installation"><span class="variant-label">Earthing Cable 6 sq.mm</span></div>
+        <div class="variant-block" data-images="assets/products/cable-dc-generic-1.jpg|assets/products/cable-dc-generic-2.jpg"><img class="variant-image" src="assets/products/cable-dc-generic-1.jpg" alt="Solar panel installation with red and black DC cable"><span class="variant-label">DC Cable (WaaCab, Polycab) 2.5 sq.mm</span></div>
+        <div class="variant-block" data-images="assets/products/cable-dc-generic-1.jpg|assets/products/cable-dc-generic-2.jpg"><img class="variant-image" src="assets/products/cable-dc-generic-1.jpg" alt="Solar panel installation with red and black DC cable"><span class="variant-label">DC Cable (WaaCab, Polycab) 4 sq.mm</span></div>
+        <div class="variant-block" data-images="assets/products/cable-dc-generic-1.jpg|assets/products/cable-dc-generic-2.jpg"><img class="variant-image" src="assets/products/cable-dc-generic-1.jpg" alt="Solar panel installation with red and black DC cable"><span class="variant-label">DC Cable (WaaCab, Polycab) 6 sq.mm</span></div>
+        <div class="variant-block" data-images="assets/products/cable-la-copper-16sqmm-1.jpg|assets/products/cable-la-copper-16sqmm-2.jpg"><img class="variant-image" src="assets/products/cable-la-copper-16sqmm-1.jpg" alt="LA copper lightning arrester cable 16 sq mm"><span class="variant-label">LA Copper Cable 16 sq.mm</span></div>
+        <div class="variant-block" data-images="assets/products/cable-earthing-6sqmm-1.jpg|assets/products/cable-earthing-6sqmm-2.jpg"><img class="variant-image" src="assets/products/cable-earthing-6sqmm-1.jpg" alt="Earthing cable copper 6 sq mm green"><span class="variant-label">Earthing Cable 6 sq.mm</span></div>
       </div>
     </div>
 
@@ -267,16 +275,16 @@
         </span>
       </div>
       <div class="variant-grid">
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-ac-db.jpg" alt="AC distribution board"><span class="variant-label">AC DB (230V / 440V)</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DCDB 1-in-1-out (600V / 1000V)</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">DCDB 2-in-2-out (600V / 1000V)</span></div>
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-earthing-kit.jpg" alt="Earthing rod installation kit"><span class="variant-label">Earthing Kits</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Pit Cover</span></div>
-        <div class="variant-block"><div class="variant-placeholder"></div><span class="variant-label">Chemical Bag</span></div>
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-generation-meter.jpg" alt="Electricity generation meter"><span class="variant-label">Generation Meter</span></div>
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-mc4-connector.jpg" alt="MC4 solar panel connector"><span class="variant-label">MC4 Connectors</span></div>
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-cable-ties.jpg" alt="Cable ties"><span class="variant-label">Cable Ties</span></div>
-        <div class="variant-block"><img class="variant-image" src="assets/products/accessory-cable-tray.jpg" alt="Cable tray with cables"><span class="variant-label">Cable Tray 45×45mm</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-ac-db-1.jpg|assets/products/accessory-ac-db-2.jpg|assets/products/accessory-ac-db-3.jpg|assets/products/accessory-ac-db-4.jpg"><img class="variant-image" src="assets/products/accessory-ac-db-1.jpg" alt="AC distribution board"><span class="variant-label">AC DB (230V / 440V)</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-dcdb-1in1out-1.jpg|assets/products/accessory-dcdb-1in1out-2.jpg|assets/products/accessory-dcdb-1in1out-3.jpg"><img class="variant-image" src="assets/products/accessory-dcdb-1in1out-1.jpg" alt="Solar DCDB 1-in-1-out distribution box"><span class="variant-label">DCDB 1-in-1-out (600V / 1000V)</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-dcdb-2in2out-1.jpg|assets/products/accessory-dcdb-2in2out-2.jpg"><img class="variant-image" src="assets/products/accessory-dcdb-2in2out-1.jpg" alt="Solar DCDB 2-in-2-out distribution box"><span class="variant-label">DCDB 2-in-2-out (600V / 1000V)</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-earthing-kit-1.jpg|assets/products/accessory-earthing-kit-2.jpg|assets/products/accessory-earthing-kit-3.jpg|assets/products/accessory-earthing-kit-4.jpg|assets/products/accessory-earthing-kit-5.jpg|assets/products/accessory-earthing-kit-6.jpg"><img class="variant-image" src="assets/products/accessory-earthing-kit-1.jpg" alt="Earthing rod kit"><span class="variant-label">Earthing Kits</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-pit-cover-1.jpg|assets/products/accessory-pit-cover-2.jpg|assets/products/accessory-pit-cover-3.jpg"><img class="variant-image" src="assets/products/accessory-pit-cover-1.jpg" alt="Earthing pit cover"><span class="variant-label">Pit Cover</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-chemical-bag-1.jpg|assets/products/accessory-chemical-bag-2.jpg"><img class="variant-image" src="assets/products/accessory-chemical-bag-1.jpg" alt="Earthing chemical compound bag"><span class="variant-label">Chemical Bag</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-generation-meter-1.jpg|assets/products/accessory-generation-meter-2.jpg|assets/products/accessory-generation-meter-3.jpg|assets/products/accessory-generation-meter-4.jpg"><img class="variant-image" src="assets/products/accessory-generation-meter-1.jpg" alt="Electricity generation meter"><span class="variant-label">Generation Meter</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-mc4-connector-1.jpg|assets/products/accessory-mc4-connector-2.jpg"><img class="variant-image" src="assets/products/accessory-mc4-connector-1.jpg" alt="MC4 solar panel connector"><span class="variant-label">MC4 Connectors</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-cable-ties-1.jpg|assets/products/accessory-cable-ties-2.jpg|assets/products/accessory-cable-ties-3.jpg|assets/products/accessory-cable-ties-4.jpg|assets/products/accessory-cable-ties-5.jpg"><img class="variant-image" src="assets/products/accessory-cable-ties-1.jpg" alt="Cable ties"><span class="variant-label">Cable Ties</span></div>
+        <div class="variant-block" data-images="assets/products/accessory-cable-tray-1.jpg|assets/products/accessory-cable-tray-2.jpg"><img class="variant-image" src="assets/products/accessory-cable-tray-1.jpg" alt="Cable tray 45x45mm"><span class="variant-label">Cable Tray 45×45mm</span></div>
       </div>
     </div>
   </div>
@@ -329,7 +337,7 @@
 
         <div class="footer-contact-block">
           <span class="footer-visit-label"><span class="mr">भेट द्या</span><span class="en">Visit Us</span></span>
-          <p class="footer-address">Manoja Agencies, Ambejogai Road, Netaji Nagar, Latur, Maharashtra 413531</p>
+          <p class="footer-address">Manoja Agencies, Ambejogai Road, Netaji Nagar, Latur, Maharashtra 413512</p>
           <a class="footer-map-link" target="_blank" rel="noopener" href="https://maps.google.com/maps?q=CH37%2BCW+Latur,+Maharashtra">
             <span class="mr">नकाशावर दिशादर्शन मिळवा</span><span class="en">Get Directions</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>

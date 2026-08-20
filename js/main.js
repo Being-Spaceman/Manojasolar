@@ -49,12 +49,33 @@
     specEl.style.display = spec ? '' : 'none';
 
     const img = block.querySelector('.variant-image');
+    const imagesAttr = block.dataset.images;
+    const images = imagesAttr ? imagesAttr.split('|').filter(Boolean) : (img ? [img.src] : []);
+
     photoEl.innerHTML = '';
-    if (img) {
-      const bigImg = document.createElement('img');
-      bigImg.src = img.src;
-      bigImg.alt = img.alt;
-      photoEl.appendChild(bigImg);
+    if (images.length) {
+      const mainImg = document.createElement('img');
+      mainImg.className = 'product-modal-main-img';
+      mainImg.src = images[0];
+      mainImg.alt = img ? img.alt : '';
+      photoEl.appendChild(mainImg);
+
+      if (images.length > 1) {
+        const thumbs = document.createElement('div');
+        thumbs.className = 'product-modal-thumbs';
+        images.forEach((src, i) => {
+          const t = document.createElement('img');
+          t.src = src;
+          t.className = 'product-modal-thumb' + (i === 0 ? ' active' : '');
+          t.addEventListener('click', () => {
+            mainImg.src = src;
+            thumbs.querySelectorAll('.product-modal-thumb').forEach((el) => el.classList.remove('active'));
+            t.classList.add('active');
+          });
+          thumbs.appendChild(t);
+        });
+        photoEl.appendChild(thumbs);
+      }
     } else {
       photoEl.innerHTML = '<div class="variant-placeholder"></div>';
     }

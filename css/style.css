@@ -461,6 +461,12 @@ ul { list-style: none; }
 .section-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 10px; }
 .section-head p { color: var(--text-muted); font-size: 1rem; }
 
+.happy-customers { padding-top: 0; padding-bottom: 48px; }
+.happy-customers-image { width: 100%; max-width: 900px; display: block; margin: 0 auto; border-radius: var(--radius); }
+@media (max-width: 600px) {
+  .happy-customers { padding-bottom: 32px; }
+}
+
 /* ===== Photo placeholder (shared with products.html variant grid) ===== */
 .variant-placeholder {
   width: 100%;
