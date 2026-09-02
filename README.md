@@ -24,6 +24,7 @@ is the alternate.
 
 ## Table of contents
 
+
 - [Tech stack](#tech-stack)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
